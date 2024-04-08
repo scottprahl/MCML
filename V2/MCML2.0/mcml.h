@@ -126,29 +126,30 @@ typedef struct {
  *       Rd_ra   Rd_rt   Rd_at   Td_ra   Td_rt   Rd_at   A_rz    A_zt
  *       Rd_r    Rd_a    Rd_t    Td_r    Td_a    Td_t    A_z     A_t
  ****/
-typedef struct {		/* use bit field to save space. */
-  int         Rd_rat:1;
-  int         Rd_ra:1;
-  int         Rd_rt:1;
-  int         Rd_at:1;
-  int         Rd_r:1;
-  int         Rd_a:1;
-  int         Rd_t:1;
+typedef struct {
+    unsigned int Rd_rat : 1;
+    unsigned int Rd_ra  : 1;
+    unsigned int Rd_rt  : 1;
+    unsigned int Rd_at  : 1;
+    unsigned int Rd_r   : 1;
+    unsigned int Rd_a   : 1;
+    unsigned int Rd_t   : 1;
 
-  int         Td_rat:1;
-  int         Td_ra:1;
-  int         Td_rt:1;
-  int         Td_at:1;
-  int         Td_r:1;
-  int         Td_a:1;
-  int         Td_t:1;
+    unsigned int Td_rat : 1;
+    unsigned int Td_ra  : 1;
+    unsigned int Td_rt  : 1;
+    unsigned int Td_at  : 1;
+    unsigned int Td_r   : 1;
+    unsigned int Td_a   : 1;
+    unsigned int Td_t   : 1;
 
-  int         A_rzt:1;
-  int         A_rz:1;
-  int         A_zt:1;
-  int         A_z:1;
-  int         A_t:1;
-}           RecordStru;
+    unsigned int A_rzt : 1;
+    unsigned int A_rz  : 1;
+    unsigned int A_zt  : 1;
+    unsigned int A_z   : 1;
+    unsigned int A_t   : 1;
+} RecordStru;
+
 
 /****
  *	Structure used to describe the geometry and optical
