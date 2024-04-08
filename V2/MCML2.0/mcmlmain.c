@@ -377,12 +377,12 @@ ContinueSimu(InStru * In_Ptr, OutStru * Out_Ptr)
 
 /**************************************************************************
 ****/
-QuitProgram(void)
+void QuitProgram(void)
 {
   char        cmd_str[STRLEN];
 
   printf("Do you really want to quit MCML? (y/n): ");
-  gets(cmd_str);
+  fgets(cmd_str, STRLEN, stdin);
   if (toupper(cmd_str[0]) == 'Y')      /* really quit. */
     exit(0);
 }
@@ -476,7 +476,7 @@ main(int argc, char *argv[])
     while (1) {
       do {
 	printf("\n> Main menu (h for help) => ");
-	gets(string);
+	fgets(string, STRLEN, stdin);
       } while (!strlen(string));
 
       BranchMainMenu(string, &in_param, &out_param);

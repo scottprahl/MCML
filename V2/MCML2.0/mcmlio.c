@@ -239,7 +239,7 @@ CheckCharQ(char *Str)
   size_t      i = 0;
 
   while (i < sl)
-    if (Str[i] < 0 || Str[i] > 255) {
+    if (Str[i] < 0) {
       printf("Non-ASCII file\n");
       return (0);
     } else if (isprint(Str[i]) || isspace(Str[i]))
@@ -276,22 +276,22 @@ CommentLineQ(char *Buf)
 /**************************************************************************
  *	Skip space or comment lines and return a data line.
  ****/
+char global_buf[STRLEN];
 char       *
 FindDataLine(FILE * Fp)
 {
-  char        buf[STRLEN];
 
-  buf[0] = '\0';
+  global_buf[0] = '\0';
   do {				/* skip space or comment lines. */
-    if (fgets(buf, 255, Fp) == NULL) {
+    if (fgets(global_buf, 255, Fp) == NULL) {
       printf("Incomplete data.\n");
-      buf[0] = '\0';
+      global_buf[0] = '\0';
       break;
     } else
-      CheckCharQ(buf);
-  } while (CommentLineQ(buf));
+      CheckCharQ(global_buf);
+  } while (CommentLineQ(global_buf));
 
-  return (buf);
+  return (global_buf);
 }
 
 /**************************************************************************
@@ -332,7 +332,7 @@ GetFile(char *Fname, char *Version)
   while (1) {
     /* prompt. */
     printf("Specify filename (or . to quit to main menu):");
-    gets(Fname);
+    fgets(Fname, STRLEN, stdin);
 
     /* terminate with a period. */
     if (strlen(Fname) == 1 &&  Fname[0] == '.')
@@ -1124,11 +1124,11 @@ InterReadMediumList(InStru * In_Ptr)
 
   printf("Specify medium list. Total number of mediums: ");
 
-  gets(string);
+  fgets(string, STRLEN, stdin);
   while (sscanf(string, "%hd", &In_Ptr->num_media) != 1
 	 || In_Ptr->num_media <= 0) {
     printf("Invalid medium number. Input again: ");
-    gets(string);
+    fgets(string, STRLEN, stdin);
   }
 
   /* allocate an array for the layer parameters. */
@@ -1140,7 +1140,7 @@ InterReadMediumList(InStru * In_Ptr)
   }
   for (i = 0; i < In_Ptr->num_media; i++) {
     printf("Specify meidum %d: \n  Medium name: ", i + 1);
-    gets(string);
+    fgets(string, STRLEN, stdin);
     do {
       name_taken = 0;
       sscanf(string, "%s", medium);
@@ -1148,43 +1148,43 @@ InterReadMediumList(InStru * In_Ptr)
 	if (strcmp(In_Ptr->mediumlist[j].medium, medium) == 0) {
 	  name_taken = 1;
 	  printf("  Duplicated medium. Input again: ");
-	  gets(string);
+	  fgets(string, STRLEN, stdin);
 	  break;
 	}
     } while (name_taken);
     strcpy(In_Ptr->mediumlist[i].medium, medium);
 
     printf("  Refractive index n (>= 1.0): ");
-    gets(string);
+    fgets(string, STRLEN, stdin);
     while (sscanf(string, "%lf", &In_Ptr->mediumlist[i].n) != 1
 	   || In_Ptr->mediumlist[i].n < 1.0) {
       printf("  Invalid refractive index. Input again (>= 1.0): ");
-      gets(string);
+      fgets(string, STRLEN, stdin);
     }
 
     printf("  Absorption coefficient mua (>= 0.0 /cm): ");
-    gets(string);
+    fgets(string, STRLEN, stdin);
     while (sscanf(string, "%lf", &In_Ptr->mediumlist[i].mua) != 1
 	   || In_Ptr->mediumlist[i].mua < 0.0) {
       printf("  Invalid absorption coefficient. Input again (>= 0.0): ");
-      gets(string);
+      fgets(string, STRLEN, stdin);
     }
 
     printf("  Scattering coefficient mus (>= 0.0 /cm): ");
-    gets(string);
+    fgets(string, STRLEN, stdin);
     while (sscanf(string, "%lf", &In_Ptr->mediumlist[i].mus) != 1
 	   || In_Ptr->mediumlist[i].mus < 0.0) {
       printf("  Invalid scattering coefficient. Input again (>= 0.0): ");
-      gets(string);
+      fgets(string, STRLEN, stdin);
     }
 
     printf("  Anisotropy factor g (0.0 - 1.0): ");
-    gets(string);
+    fgets(string, STRLEN, stdin);
     while (sscanf(string, "%lf", &In_Ptr->mediumlist[i].g) != 1
 	   || In_Ptr->mediumlist[i].g < 0.0
 	   || In_Ptr->mediumlist[i].g > 1.0) {
       printf("  Invalid anisotropy factor. Input again (0.0 - 1.0): ");
-      gets(string);
+      fgets(string, STRLEN, stdin);
     }
     printf("\n");
   }
@@ -1204,13 +1204,13 @@ InterReadFnameFormat(InStru * In_Ptr)
 
   do {
     printf("Specify output filename with extension .mco: ");
-    gets(fname);
+    fgets(fname, STRLEN, stdin);
     fmode[0] = 'w';
 
     if ((file = fopen(fname, "r")) != NULL) { /* file exists. */
       printf("File %s exists, %s", fname, "w=overwrite, n=new filename: ");
       do
-        gets(fmode);
+        fgets(fmode, STRLEN, stdin);
       while (!strlen(fmode));   /* avoid null line. */
       fclose(file);
     }
@@ -1219,9 +1219,9 @@ InterReadFnameFormat(InStru * In_Ptr)
   strcpy(In_Ptr->out_fname, fname);
 
   /*
-   * printf("Output file format (A/B): "); gets(fname); while
+   * printf("Output file format (A/B): "); fgets(fname, STRLEN, stdin); while
    * (sscanf(fname, "%c", &In_Ptr->out_fformat) != 1) { printf("Error
-   * occured. Output file format (A/B): "); gets(fname); }
+   * occured. Output file format (A/B): "); fgets(fname, STRLEN, stdin); }
    * 
    * if (toupper(In_Ptr->out_fformat) != 'B')
    */
@@ -1284,11 +1284,11 @@ InterReadWth(InStru * In_Ptr)
   char        string[STRLEN];
 
   printf("Input threshold weight (0 <= wth < 1.0, 0.0001 recommended): ");
-  gets(string);
+  fgets(string, STRLEN, stdin);
   while (sscanf(string, "%lf", &In_Ptr->Wth) != 1
 	 || In_Ptr->Wth < 0 || In_Ptr->Wth >= 1) {
     printf("Invalid wth. Input again (0 <= wth < 1.0): ");
-    gets(string);
+    fgets(string, STRLEN, stdin);
   }
 
   printf("\n");
@@ -1303,11 +1303,11 @@ InterReadRanSeed(InStru * In_Ptr)
   char        string[STRLEN];
 
   printf("Input random number seed (1 <= ran_seed <= 32000): ");
-  gets(string);
+  fgets(string, STRLEN, stdin);
   while (sscanf(string, "%ld", &In_Ptr->ran_seed) != 1
 	 || In_Ptr->ran_seed < 1 || In_Ptr->ran_seed > 32000) {
     printf("Invalid ran_seed. Input again (1 <= ran_seed <= 32000): ");
-    gets(string);
+    fgets(string, STRLEN, stdin);
   }
 
   printf("\n");
@@ -1349,11 +1349,11 @@ InterReadLayerSpecs(InStru * In_Ptr)
   PrintMediumNames(In_Ptr);
   printf("\nTotal number of layers: ");
 
-  gets(string);
+  fgets(string, STRLEN, stdin);
   while (sscanf(string, "%hd", &In_Ptr->num_layers) != 1
 	 || In_Ptr->num_layers <= 0) {
     printf("Invalid layer number. Input again: ");
-    gets(string);
+    fgets(string, STRLEN, stdin);
   }
 
   /* Allocate an array for the layer parameters. */
@@ -1370,15 +1370,15 @@ InterReadLayerSpecs(InStru * In_Ptr)
       error = 0;
       if (i == 0) {
 	printf("\n  Name of upper ambient medium: ");
-	gets(string);
+	fgets(string, STRLEN, stdin);
 	sscanf(string, "%s", name);
       } else if (i == In_Ptr->num_layers + 1) {
 	printf("\n  Name of lower ambient medium: ");
-	gets(string);
+	fgets(string, STRLEN, stdin);
 	sscanf(string, "%s", name);
       } else {
 	printf("\n  Medium name of layer %d: ", i);
-	gets(string);
+	fgets(string, STRLEN, stdin);
 	sscanf(string, "%s", name);
       }
 
@@ -1396,10 +1396,10 @@ InterReadLayerSpecs(InStru * In_Ptr)
 
     if ((i != 0) && (i != In_Ptr->num_layers + 1)) {
       printf("  Input the thickness of layer %d (thickness > 0.0 cm): ", i);
-      gets(string);
+      fgets(string, STRLEN, stdin);
       while (sscanf(string, "%lf", &thick) != 1 || thick <= 0) {
 	printf("  Invalid thickness. Input again (thickness > 0.0 cm): ");
-	gets(string);
+	fgets(string, STRLEN, stdin);
       }
       In_Ptr->layerspecs[i].z0 = z;
       z = z + thick;
@@ -1440,11 +1440,11 @@ InterReadSourceType(InStru * In_Ptr)
   char        string[STRLEN], c;
 
   printf("Input source type (p = pencil / i = isotropic): ");
-  gets(string);
+  fgets(string, STRLEN, stdin);
   while (sscanf(string, "%c", &c) != 1 ||
 	 !(toupper(c) == 'P' || toupper(c) == 'I')) {
     printf("Invalid type. Input again (p = pencil / i = isotropic): ");
-    gets(string);
+    fgets(string, STRLEN, stdin);
   }
 
   if (toupper(c) == 'P')
@@ -1784,10 +1784,10 @@ InterReadParam(InStru * In_Ptr)
   InterReadRanSeed(In_Ptr);
 
   printf("Do you want to save the input to a file? (Y/N)");
-  gets(string);
+  fgets(string, STRLEN, stdin);
   if (toupper(string[0]) == 'Y') {
     printf("Give the file name to save input: ( .mci): ");
-    gets(string);
+    fgets(string, STRLEN, stdin);
     if ((fp = fopen(string, "w")) == NULL)
       puts("Can not open the file to write.");
     else
@@ -1876,7 +1876,7 @@ QuitOrContinue()
   do {
     printf("Do you want to change them? (Y/N): ");
     do {
-      gets(string);
+      fgets(string, STRLEN, stdin);
     } while (!strlen(string));
   } while (toupper(string[0]) != 'Y' && toupper(string[0]) != 'N');
 
@@ -2108,25 +2108,26 @@ RunChangedInput(InStru * In_Ptr)
 
   printf("Any changes to the input parameters? (Y/N)");
   do {
-    gets(string);
+    fgets(string, STRLEN, stdin);
   } while (!strlen(string));
 
   while (toupper(string[0]) == 'Y') {
     do {
       do {
 	printf("\n> Change menu (h for help) => ");
-	gets(string);
+	fgets(string, STRLEN, stdin);
       } while (!strlen(string));
 
-      if (branch = BranchChangeMenu(string, In_Ptr))
+      branch = BranchChangeMenu(string, In_Ptr);
+      if (branch)
 	break;			/* string[0] is 'X' or 'Q'. */
     } while (1);
 
     printf("Do you want to save the input to a file? (Y/N)");
-    gets(string);
+    fgets(string, STRLEN, stdin);
     if (toupper(string[0]) == 'Y') {
       printf("Give the file name to save input: ( .mci): ");
-      gets(string);
+      fgets(string, STRLEN, stdin);
       if ((fp = fopen(string, "w")) == NULL)
 	puts("Can not open the file to write.");
       else
@@ -2136,9 +2137,9 @@ RunChangedInput(InStru * In_Ptr)
       if (!CheckInputConsis(In_Ptr)) {
 	do {
 	  printf("Change input or exit to main menu (c/x): ");
-	  gets(string);
-	} while (!strlen(string) ||
-		 toupper(string[0]) != 'X' && toupper(string[0]) != 'C');
+	  fgets(string, STRLEN, stdin);
+	} while (!strlen(string) || 
+		 (toupper(string[0]) != 'X' && toupper(string[0]) != 'C'));
 
 	if (toupper(string[0]) == 'X') {
 	  free(In_Ptr->mediumlist);
@@ -2478,18 +2479,20 @@ ScaleRdTd(InStru * In_Ptr, OutStru * Out_Ptr, char Mode)
 
   scale1 = dt * In_Ptr->num_photons;
   if (In_Ptr->record.Rd_t)
-    for (it = 0; it < nt; it++)
+    for (it = 0; it < nt; it++) {
       if (Mode == 0)		/* scale Rd_t. */
 	Out_Ptr->Rd_t[it] /= scale1;
       else			/* unscale Rd_t. */
 	Out_Ptr->Rd_t[it] *= scale1;
+	}
 
-  if (In_Ptr->record.Td_t)
+  if (In_Ptr->record.Td_t) {
     for (it = 0; it < nt; it++)
       if (Mode == 0)		/* scale Td_t. */
 	Out_Ptr->Td_t[it] /= scale1;
       else			/* unscale Rd_t. */
 	Out_Ptr->Td_t[it] *= scale1;
+	}
 
   scale1 = 2.0 * PI * dr * dr * In_Ptr->num_photons;
   /* area is 2*PI*[(ir+0.5)*dr]*dr.  ir + 0.5 to be added. */
@@ -2649,62 +2652,71 @@ ScaleA(InStru * In_Ptr, OutStru * Out_Ptr, char Mode)
 
   scale2 = scale1 * dt;
   if (In_Ptr->record.A_t)
-    for (it = 0; it < nt; it++)
+    for (it = 0; it < nt; it++) {
       if (Mode == 0)		/* scale A_t. */
 	Out_Ptr->A_t[it] /= scale2;
       else			/* unscale A_t. */
 	Out_Ptr->A_t[it] *= scale2;
+	}
 
   scale1 *= dz;
   if (In_Ptr->record.A_z)
-    for (iz = 0; iz < nz; iz++)
+    for (iz = 0; iz < nz; iz++) {
       if (Mode == 0)		/* scale A_z. */
 	Out_Ptr->A_z[iz] /= scale1;
       else			/* unscale A_z. */
 	Out_Ptr->A_z[iz] *= scale1;
+	}
 
   scale2 = scale1 * dt;
   if (In_Ptr->record.A_zt)
-    for (iz = 0; iz < nz; iz++)
+    for (iz = 0; iz < nz; iz++) {
       for (it = 0; it < nt; it++)
 	if (Mode == 0)		/* scale A_zt. */
 	  Out_Ptr->A_zt[iz][it] /= scale2;
 	else			/* unscale A_zt. */
 	  Out_Ptr->A_zt[iz][it] *= scale2;
+	}
 
   if (In_Ptr->record.A_rz)
-    for (iz = 0; iz < nz; iz++)
+    for (iz = 0; iz < nz; iz++) {
       if (Mode == 0)		/* scale Ab_z. */
 	Out_Ptr->Ab_z[iz] /= scale1;
       else			/* unscale Ab_z. */
 	Out_Ptr->Ab_z[iz] *= scale1;
+	}
 
   if (In_Ptr->record.A_rzt)
-    for (iz = 0; iz < nz; iz++)
+    for (iz = 0; iz < nz; iz++) {
       for (it = 0; it < nt; it++)
 	if (Mode == 0)		/* scale Ab_zt. */
 	  Out_Ptr->Ab_zt[iz][it] /= scale2;
 	else			/* unscale Ab_zt. */
 	  Out_Ptr->Ab_zt[iz][it] *= scale2;
+	}
 
   scale1 = 2.0 * PI * dr * dr * dz * In_Ptr->num_photons;
-  if (In_Ptr->record.A_rz)
+  if (In_Ptr->record.A_rz) {
     for (ir = 0; ir < nr; ir++)
       for (iz = 0; iz < nz; iz++)
 	if (Mode == 0)		/* scale A_rz. */
 	  Out_Ptr->A_rz[ir][iz] /= (ir + 0.5) * scale1;
 	else			/* unscale A_rz. */
 	  Out_Ptr->A_rz[ir][iz] *= (ir + 0.5) * scale1;
+	}
 
   scale2 = scale1 * dt;
   if (In_Ptr->record.A_rzt)
-    for (ir = 0; ir < nr; ir++)
-      for (iz = 0; iz < nz; iz++)
-	for (it = 0; it < nt; it++)
+    for (ir = 0; ir < nr; ir++){
+      for (iz = 0; iz < nz; iz++) {
+	for (it = 0; it < nt; it++) {
 	  if (Mode == 0)	/* scale A_rzt. */
 	    Out_Ptr->A_rzt[ir][iz][it] /= (ir + 0.5) * scale2;
 	  else			/* unscale A_rzt. */
 	    Out_Ptr->A_rzt[ir][iz][it] *= (ir + 0.5) * scale2;
+	}
+	}
+	}
 }
 
 /**************************************************************************
