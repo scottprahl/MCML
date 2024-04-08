@@ -206,7 +206,7 @@ LaserBeam(BeamStru * Beam_Ptr)
 
   printf("Beam profile:f=flat, g=Gaussian, a=arbitrary, q=quit: ");
   do
-    gets(cmd_str);
+    fgets(cmd_str, STRLEN, stdin);
   while (!strlen(cmd_str));
 
   switch (toupper(cmd_str[0])) {
@@ -252,7 +252,7 @@ ConvResolution(ConvStru * Conv_Ptr)
   do {
     printf("Do you want to change them? (Y/N): ");
     do {
-      gets(string);
+      fgets(string, STRLEN, stdin);
     } while (!strlen(string));
   } while (toupper(string[0]) != 'Y' && toupper(string[0]) != 'N');
 
@@ -496,7 +496,7 @@ ConvM_rx(ConvStru * Conv_Ptr,
 
     if (Conv_Ptr->beam.type == flat)
       factor = (rc <= R) ? 0.5 / PI : 0;
-    else if (Conv_Ptr->beam.type = gaussian)
+    else if (Conv_Ptr->beam.type == gaussian)
       factor = 0.5 / PI * exp(-2 * rc * rc / (R * R));
     else
       factor = ArbSource(0, Conv_Ptr);

@@ -28,7 +28,7 @@ GetWriteFile(char *Ext)
       printf("Enter output filename with extension .%s (or . to quit): ", Ext);
     else
       printf("Enter output filename (or . to quit): ");
-    gets(fname);
+    fgets(fname, STRLEN, stdin);
     if (strlen(fname) == 1 && fname[0] == '.') {
       fmode[0] = 'q';
       break;
@@ -39,7 +39,7 @@ GetWriteFile(char *Ext)
       printf("File %s exists, %s",
 	     fname, "w=overwrite, a=append, n=new filename, q=quit: ");
       do
-	gets(fmode);
+	fgets(fmode, STRLEN, stdin);
       while (!strlen(fmode));	/* avoid null line. */
       fclose(file);
     }
@@ -852,7 +852,7 @@ GetFixedTZRA(double Max, char mode)
     else 
       printf("Specify a fixed a (0 - %f sr): ", Max);
 
-    gets(buf);
+    fgets(buf, STRLEN, stdin);
   } while (sscanf(buf, "%lf", &number) != 1 || number<0.0 || number>Max);
 
   return number;
@@ -945,7 +945,7 @@ ExtractA_rz_t(InStru * In_Ptr, OutStru * Out_Ptr, char mode)
 
   do {
     printf("Which output format (3 = 3 columns / c = contour)? ");
-    gets(buf);
+    fgets(buf, STRLEN, stdin);
   } while ((toupper(buf[0]) != '3') && (toupper(buf[0]) != 'C'));
 
   if (toupper(buf[0]) == '3')
@@ -1057,7 +1057,7 @@ ExtractConvA_rz_t(InStru * In_Ptr, OutStru * Out_Ptr,
  
   do {
     printf("Which output format (3 = 3 columns / c = contour)? ");
-    gets(buf);
+    fgets(buf, STRLEN, stdin);
   } while ((toupper(buf[0]) != '3') && (toupper(buf[0]) != 'C'));
  
   if (toupper(buf[0]) == '3')
@@ -1106,7 +1106,7 @@ ExtractA_rz(InStru * In_Ptr,
 
   do {
     printf("Which output format (3 = 3 columns / c = contour)? ");
-    gets(buf);
+    fgets(buf, STRLEN, stdin);
   } while ((toupper(buf[0]) != '3') && (toupper(buf[0]) != 'C'));
 
   if (toupper(buf[0]) == '3') 
@@ -1143,12 +1143,13 @@ ExtractConvA_rz(InStru *In_Ptr, OutStru *Out_Ptr,
   double     **A_rzc;
 
   ConvResolution(Conv_Ptr);
-  if ((! In_Ptr->record.A_rz &&
-      ((Out_Ptr->A_rz = AllocArray2D(0, nr-1, 0, nz-1, 0)) == NULL)
-      || ((Out_Ptr->Ab_z = AllocArray1D(0, nz-1, 0)) == NULL))
-     || ((A_rzc = AllocArray2D(0, Conv_Ptr->nrc-1, 0, nz-1, 0)) == NULL)) {
-    printf("No enough memory to convolve A_rz.\n");
-    return;
+  if (In_Ptr->record.A_rz) {
+      if ( ((Out_Ptr->A_rz = AllocArray2D(0, nr-1, 0, nz-1, 0)) == NULL) ||
+           ((Out_Ptr->Ab_z = AllocArray1D(0, nz-1, 0)) == NULL) ||
+           ((A_rzc = AllocArray2D(0, Conv_Ptr->nrc-1, 0, nz-1, 0)) == NULL) ) {
+        printf("Not enough memory to convolve A_rz.\n");
+        return;
+        }
   }
 
   if (In_Ptr->record.A_rzt) {
@@ -1174,7 +1175,7 @@ ExtractConvA_rz(InStru *In_Ptr, OutStru *Out_Ptr,
 
   do {
     printf("Which output format (3 = 3 columns / c = contour)? ");
-    gets(buf);
+    fgets(buf, STRLEN, stdin);
   } while ((toupper(buf[0]) != '3') && (toupper(buf[0]) != 'C'));
  
   if (toupper(buf[0]) == '3')
@@ -2205,7 +2206,7 @@ ExtractRd_a_t(InStru * In_Ptr, OutStru * Out_Ptr,
     }
 
   } else {			/* In_Ptr->record.Rd_at == 1 */
-    for (ia = 0; ir < na; ia++) {
+    for (ia = 0; ia < na; ia++) {
       temp = Out_Ptr->Rd_at[ia][it];
       fprintf(file, "%-12.4E\t%-12.4E\n", (ia+0.5)*da, temp);
     }
@@ -3082,7 +3083,7 @@ ExtractTd_a_t(InStru * In_Ptr, OutStru * Out_Ptr,
     }
 
   } else {			/* In_Ptr->record.Td_at == 1 */
-    for (ia = 0; ir < na; ia++) {
+    for (ia = 0; ia < na; ia++) {
       temp = Out_Ptr->Td_at[ia][it];
       fprintf(file, "%-12.4E\t%-12.4E\n", (ia+0.5)*da, temp);
     }
@@ -3470,7 +3471,7 @@ PrintRecordQuan(InStru * In_Ptr)
 /**************************************************************************
  *	Print 6 items each line.
  ****/
-PrintAndNewLine(short *Index, char *String)
+void PrintAndNewLine(short *Index, char *String)
 {
   (*Index)++;
   if (*Index > 7) {
@@ -3485,7 +3486,7 @@ PrintAndNewLine(short *Index, char *String)
  *      mode = 0, print the original quantities;
  *      mode = 1, print the convolved quantities.
  ****/
-PrintExtractQuan(ConvStru * Conv_Ptr, char mode)
+void PrintExtractQuan(ConvStru * Conv_Ptr, char mode)
 {
   short         index = 0;
   char          needspace = 0;
@@ -3713,7 +3714,7 @@ ExtractOrigData(InStru * In_Ptr,
 
     printf("Specify quantity to be extracted (or . to quit): ");
     do
-      gets(cmd_str);
+      fgets(cmd_str, STRLEN, stdin);
     while (!strlen(cmd_str));     /* avoid null string. */
     BranchOrigQuantity(ToUpperString(cmd_str), In_Ptr, Out_Ptr, Conv_Ptr);
   }
@@ -3721,7 +3722,7 @@ ExtractOrigData(InStru * In_Ptr,
 
 /**************************************************************************
  ****/
-BranchConvQuantity(char *Quantity,
+void BranchConvQuantity(char *Quantity,
                InStru * In_Ptr,
                OutStru * Out_Ptr,
                ConvStru * Conv_Ptr)
@@ -3828,7 +3829,7 @@ ExtractConvData(InStru * In_Ptr,
 
     printf("Specify quantity to be extracted (or . to quit): ");
     do
-      gets(cmd_str);
+      fgets(cmd_str, STRLEN, stdin);
     while (!strlen(cmd_str));     /* avoid null string. */
     BranchConvQuantity(ToUpperString(cmd_str), In_Ptr, Out_Ptr, Conv_Ptr);
   }

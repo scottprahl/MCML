@@ -64,44 +64,44 @@ typedef struct {
  *	E.g., Td_r_a_t means Td_r at a specific a and t.
  ****/
 typedef struct {		/* use bit field to save space. */
-  int         Td_r_a_t:1;	/* Td_r@a@t. */
-  int         Td_r_a:1;		/* Td_r@a*t. */
-  int         Td_r_t:1;		/* Td_r*a@t. */
-  int         Td_r:1;		/* Td_r*a*t. */
+  unsigned int Td_r_a_t:1;	/* Td_r@a@t. */
+  unsigned int Td_r_a:1;		/* Td_r@a*t. */
+  unsigned int Td_r_t:1;		/* Td_r*a@t. */
+  unsigned int Td_r:1;		/* Td_r*a*t. */
 
-  int         Td_a_r_t:1;	/* Td_a@r@t. */
-  int         Td_a_r:1;		/* Td_a@r*t. */
-  int         Td_a_t:1;		/* Td_a*r@t. */
-  int         Td_a:1;		/* Td_a*r*t. */
+  unsigned int Td_a_r_t:1;	/* Td_a@r@t. */
+  unsigned int Td_a_r:1;		/* Td_a@r*t. */
+  unsigned int Td_a_t:1;		/* Td_a*r@t. */
+  unsigned int Td_a:1;		/* Td_a*r*t. */
 
-  int         Td_t_r_a:1;	/* Td_t@r@a. */
-  int         Td_t_r:1;		/* Td_t@a*a. */
-  int         Td_t_a:1;		/* Td_t*r@a. */
-  int         Td_t:1;		/* Td_t*r*a. */
+  unsigned int Td_t_r_a:1;	/* Td_t@r@a. */
+  unsigned int Td_t_r:1;		/* Td_t@a*a. */
+  unsigned int Td_t_a:1;		/* Td_t*r@a. */
+  unsigned int Td_t:1;		/* Td_t*r*a. */
 
-  int         Rd_r_a_t:1;	/* Rd_r@a@t. */
-  int         Rd_r_a:1;		/* Rd_r@a*t. */
-  int         Rd_r_t:1;		/* Rd_r*a@t. */
-  int         Rd_r:1;		/* Rd_r*a*t. */
+  unsigned int Rd_r_a_t:1;	/* Rd_r@a@t. */
+  unsigned int Rd_r_a:1;		/* Rd_r@a*t. */
+  unsigned int Rd_r_t:1;		/* Rd_r*a@t. */
+  unsigned int Rd_r:1;		/* Rd_r*a*t. */
 
-  int         Rd_a_r_t:1;	/* Rd_a@r@t. */
-  int         Rd_a_r:1;		/* Rd_a@r*t. */
-  int         Rd_a_t:1;		/* Rd_a*r@t. */
-  int         Rd_a:1;		/* Rd_a*r*t. */
+  unsigned int Rd_a_r_t:1;	/* Rd_a@r@t. */
+  unsigned int Rd_a_r:1;		/* Rd_a@r*t. */
+  unsigned int Rd_a_t:1;		/* Rd_a*r@t. */
+  unsigned int Rd_a:1;		/* Rd_a*r*t. */
 
-  int         Rd_t_r_a:1;	/* Rd_t@r@a. */
-  int         Rd_t_r:1;		/* Rd_t@a*a. */
-  int         Rd_t_a:1;		/* Rd_t*r@a. */
-  int         Rd_t:1;		/* Rd_t*r*a. */
+  unsigned int Rd_t_r_a:1;	/* Rd_t@r@a. */
+  unsigned int Rd_t_r:1;		/* Rd_t@a*a. */
+  unsigned int Rd_t_a:1;		/* Rd_t*r@a. */
+  unsigned int Rd_t:1;		/* Rd_t*r*a. */
 
-  int         A_rz_t:1;		/* A_rz@t. */
-  int         A_rz:1;		/* A_rz*t. */
-  int         A_z_t:1;		/* A_z*r@t. */
-  int         A_z:1;		/* A_z*r*t. */
-  int         A_t_r_z:1;	/* A_t@r@z. */
-  int         A_t_z:1;		/* A_t*r@z. */
-  int         A_t:1;		/* A_t*r*z. */
-  int         A_l:1;		/* A_layer. */
+  unsigned int A_rz_t:1;		/* A_rz@t. */
+  unsigned int A_rz:1;		/* A_rz*t. */
+  unsigned int A_z_t:1;		/* A_z*r@t. */
+  unsigned int A_z:1;		/* A_z*r*t. */
+  unsigned int A_t_r_z:1;	/* A_t@r@z. */
+  unsigned int A_t_z:1;		/* A_t*r@z. */
+  unsigned int A_t:1;		/* A_t*r*z. */
+  unsigned int A_l:1;		/* A_layer. */
 }           ExtractStru;
 
 /*************************************************************************

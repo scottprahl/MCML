@@ -264,11 +264,11 @@ GetShort(short Lo, short Hi)
   char        in_str[STRLEN];
   short       x;
 
-  gets(in_str);
+  fgets(in_str, STRLEN, stdin);
   sscanf(in_str, "%hd", &x);
   while (x < Lo || x > Hi) {
     printf("...Wrong paramter.  Input again: ");
-    gets(in_str);
+    fgets(in_str, STRLEN, stdin);
     sscanf(in_str, "%hd", &x);
   }
   return (x);
@@ -282,11 +282,11 @@ GetFloat(float Lo, float Hi)
   char        in_str[STRLEN];
   float       x;
 
-  gets(in_str);
+  fgets(in_str, STRLEN, stdin);
   sscanf(in_str, "%f", &x);
   while (x < Lo || x > Hi) {
     printf("...Wrong paramter.  Input again: ");
-    gets(in_str);
+    fgets(in_str, STRLEN, stdin);
     sscanf(in_str, "%f", &x);
   }
   return (x);

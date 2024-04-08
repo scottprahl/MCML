@@ -39,7 +39,7 @@ CheckCharQ(char *Str)
   size_t      i = 0;
  
   while (i < sl)
-    if (Str[i] < 0 || Str[i] > 255) {/* this condition actually happened. */
+    if (Str[i] < 0) {/* this condition actually happened. */
       printf("Non-ASCII file\n");
       return (0);
     } else if (isprint(Str[i]) || isspace(Str[i]))

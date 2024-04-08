@@ -253,7 +253,7 @@ GetQuadrant(double x, double y)
     sh = 2;			/* Include +y-axis. */
   else if (x < 0 && y <= 0)
     sh = 3;			/* Include -x-axis. */
-  else if (x >= 0 && y < 0)
+  else
     sh = -1;		/* Include -y-axis. */
 
   return (sh);

@@ -41,7 +41,7 @@ QuitProgram(void)
   char        cmd_str[STRLEN];
 
   printf("Do you really want to exit CONV? (y/n): ");
-  gets(cmd_str);
+  fgets(cmd_str, STRLEN, stdin);
   if (toupper(cmd_str[0]) == 'Y') {	/* really quit. */
     exit(0);
   }
@@ -158,7 +158,7 @@ main(void)
   do {
     printf("\n> Main menu (h for help) => ");
     do				/* get the command input. */
-      gets(cmd_str);
+      fgets(cmd_str, STRLEN, stdin);
     while (!strlen(cmd_str));
     BranchMainCmd(cmd_str, &in_parm, &out_parm, &conv_parm);
   } while (1);
