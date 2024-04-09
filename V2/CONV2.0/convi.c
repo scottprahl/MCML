@@ -103,7 +103,7 @@ FILE *GetFile(char *Fname)
         if (strlen(Fname) == 1 && Fname[0] == '.')
             break;
 
-        file = fopen(Fname, "rb");
+        file = fopen(Fname, "r");
     } while (file == NULL);
 
     return (file);

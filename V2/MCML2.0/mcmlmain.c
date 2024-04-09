@@ -430,7 +430,7 @@ int main(int argc, char *argv[])
 
     if (argc >= 2) {            /* non-interactive. */
         GetFnameFromArgv(argc, argv, input_filename);
-        if ((input_file_ptr = fopen(input_filename, "rb")) != NULL)
+        if ((input_file_ptr = fopen(input_filename, "r")) != NULL)
             if (CheckFileVersionQ(input_file_ptr, "mcmli2.0"))
                 NonInterSimu(input_file_ptr, &in_param, &out_param);
         exit(0);

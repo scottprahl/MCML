@@ -35,7 +35,7 @@ FILE *GetWriteFile(char *Ext)
         else
             fmode[0] = 'w';
 
-        if ((file = fopen(fname, "rb")) != NULL) {       /* file exists. */
+        if ((file = fopen(fname, "r")) != NULL) {       /* file exists. */
             printf("File %s exists, %s", fname, "w=overwrite, a=append, n=new filename, q=quit: ");
             do
                 scanf("%s", fmode);
