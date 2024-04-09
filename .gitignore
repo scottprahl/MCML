@@ -3,3 +3,7 @@
 *.o
 *.exe
 *.mco
+V2/MCML2.0/mcml
+V2/MCML2.0/mcml.exe
+V2/CONVL2.0/conv
+V2/CONV2.0/conv.exe
