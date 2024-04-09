@@ -40,6 +40,8 @@ realclean: clean
 
 test: mcml
 	./mcml template.mci
+	./mcml samples/sample1/sample1.mci
+	./mcml samples/sample2/sample2.mci
 
 tidy:
 	gindent $(INDENT_OPT) *.c *.h
