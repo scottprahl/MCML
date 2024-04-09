@@ -17,7 +17,7 @@ all: $(TARGET)
 
 conv.exe:
 	make clean
-	make CC="x86_64-w64-mingw32-gcc" mcml
+	make CC="x86_64-w64-mingw32-gcc" conv
 
 # Rule to build the executable
 $(TARGET): $(OBJS)

@@ -1451,11 +1451,14 @@ ExtractConvA_t_r_z(InStru * In_Ptr, OutStru * Out_Ptr,
     return;
   }
  
-  for (it = 0; it < nt; it ++) 
-    for (ir = 0; ir < nr; ir ++) 
+  for (it = 0; it < nt; it ++) {
+    for (ir = 0; ir < nr; ir ++) {
       Conv_Ptr->M_rx[ir][it] = 0.0;
-      for (iz = 0; iz < nz; iz ++)
-	Conv_Ptr->M_rx[ir][it] += Out_Ptr->A_rzt[ir][iz][it] * dz;
+    }
+    for (iz = 0; iz < nz; iz ++) {
+       Conv_Ptr->M_rx[ir][it] += Out_Ptr->A_rzt[ir][iz][it] * dz;
+    }
+  }
 
   for (it = 0; it < nt; it ++) {
     Conv_Ptr->Mb_x[it] = 0.0;

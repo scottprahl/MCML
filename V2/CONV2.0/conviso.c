@@ -21,15 +21,13 @@
  *	Return true is val is between Z[i][j] and Z[i+1][j].
  ****/
 #define INTERSECTI(val, Z, i, j) \
-  (Z[i][j] <= val && val <= Z[i+1][j] || \
-   Z[i][j] >= val && val >= Z[i+1][j])
+  ((Z[i][j] <= val && val <= Z[i+1][j]) || (Z[i][j] >= val && val >= Z[i+1][j]))
 
 /****
  *	Return true is val is between Z[i][j] and Z[i][j+1].
  ****/
 #define INTERSECTJ(val, Z, i, j) \
-  (Z[i][j] <= val && val <= Z[i][j+1] || \
-   Z[i][j] >= val && val >= Z[i][j+1])
+  ((Z[i][j] <= val && val <= Z[i][j+1]) || (Z[i][j] >= val && val >= Z[i][j+1]))
 
 FILE       *GetWriteFile(char *Ext);	/* in conho.c. */
 
