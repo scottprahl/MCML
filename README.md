@@ -1,6 +1,7 @@
 # MCML
 
-This repository updates the original V1 and V2 MCML code so that it compiles without warnings.  It also fixes a few minor bugs in the V2 conv program.
+**This fork updates the original V1 and V2 MCML code so that it compiles without warnings.  It also fixes a few minor bugs in the V2 conv program.
+**
 
 A Monte Carlo model of light transport in multi-layered tissue (MCML) and the corresponding convolution program (CONV) have been coded in ANSI Standard C. 
 The programs can therefore be executed on a variety of computers. 
