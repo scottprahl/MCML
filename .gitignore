@@ -1,0 +1,4 @@
+# Ignore binaries
+*.zip
+*.o
+*.exe

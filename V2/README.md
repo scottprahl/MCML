@@ -29,17 +29,12 @@ Pasadena, CA 91125<br />
 Office: 205 Keck Labs (via 207)<br />
 Work: 626-395-1959<br />
 Fax: 626-395-1347<br />
-Email: LVW@Caltech.edu<br />
+Email: LVW@caltech.edu<br />
 Web: http://COILab.Caltech.edu<br />
 
 
 Steven L. Jacques, Ph.D.<br />
 Professor<br />
-Oregon Medical Laser Center<br />
-Providence/St. Vincent Hospital<br />
-9205 SW Barnes Rd.<br />
-Portland, OR 97225<br />
-Tel:	503-216-4092<br />
-Fax:	503-291-2422<br />
-Email:	sjacques@ece.ogi.edu<br />
-URL:	http://omlc.ogi.edu/staff/jacques.html<br />
+University of Washington<br />
+Email:	stevjacq@uw.edu<br />
+URL:	https://spie.org/profile/Steve.Jacques-7427#_=_<br />
