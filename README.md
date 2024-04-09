@@ -1,10 +1,22 @@
 # MCML
 
+### This fork updates the original V1 and V2 MCML code.  
+
+1. Includes Makefiles
+2. Fixes warnings and errors so build is clean
+3. Corrects a few typos
+4. Fixes a few minor bugs in the V2 conv program
+5. Reformatted the code to make it more readable
+
+### Description
+
 A Monte Carlo model of light transport in multi-layered tissue (MCML) and the corresponding convolution program (CONV) have been coded in ANSI Standard C. 
 The programs can therefore be executed on a variety of computers. 
 Dynamic data allocation is used for MCML, hence the number of tissue layers and the number of grid elements of the grid system can be varied by users at 
 run time as long as the total amount of memory does not exceed what the system allows. 
 The principle and the implementation details of the model are described elsewhere in publications, and the instructions for using MCML and CONV are presented here.
+
+### Citation
 
 References related to the software package (citation appreciated):
 
