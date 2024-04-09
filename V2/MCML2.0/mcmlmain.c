@@ -439,7 +439,7 @@ int main(int argc, char *argv[])
         while (1) {
             do {
                 printf("\n> Main menu (h for help) => ");
-                fgets(string, STRLEN, stdin);
+                scanf("%s", string);
             } while (!strlen(string));
 
             BranchMainMenu(string, &in_param, &out_param);

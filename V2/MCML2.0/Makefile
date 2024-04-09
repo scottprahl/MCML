@@ -35,8 +35,7 @@ clean:
 realclean: clean
 	rm -rf mcml
 	rm -rf mcml.exe
-	rm -rf temp1.mco
-	rm -rf temp2.mco
+	rm -rf test1.mco sample1a.mco sample1b.mco sample2.mco
 
 test: mcml
 	./mcml template.mci

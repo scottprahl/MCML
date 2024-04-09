@@ -102,7 +102,7 @@ GetWriteFile(char *Ext)
       printf("File %s exists, %s",
 	     fname, "w=overwrite, a=append, n=new filename, q=quit: ");
       do
-	fgets(fmode, STRLEN, stdin);
+	    scanf("%s", fmode);
       while (!strlen(fmode));	/* avoid null line. */
       fclose(file);
     }
