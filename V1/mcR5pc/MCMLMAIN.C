@@ -36,6 +36,7 @@ void LaunchPhoton(double, LayerStruct *, PhotonStruct *);
 void HopDropSpin(InputStruct  *,PhotonStruct *,OutStruct *);
 void SumScaleResult(InputStruct, OutStruct *);
 void WriteResult(InputStruct, OutStruct, char *);
+void ShowVersion(char *version);
 
 
 /***********************************************************
@@ -182,7 +183,7 @@ void DoOneRun(short NumRuns, InputStruct *In_Ptr)
  *	The argument to the command line is filename, if any.
  *	Macintosh does not support command line.
  ****/
-int
+int 
 main(int argc, char *argv[]) 
 {
   char input_filename[STRLEN];

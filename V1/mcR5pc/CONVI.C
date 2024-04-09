@@ -458,7 +458,6 @@ ReadTt_a(FILE * File_Ptr,
 	 short Na,
 	 OutStruct * Out_Ptr)
 {
-  char        buf[STRLEN];
   short       i;
 
   for (i = 0; i < Na; i++) {

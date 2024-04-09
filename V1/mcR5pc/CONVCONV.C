@@ -24,6 +24,7 @@ void        AllocConvData(InputStruct *, OutStruct *);
 void        FreeConvData(InputStruct *, OutStruct *);
 float       qtrap(float (*) (float), float, float, float);
 double      BessI0(double);
+short       IzToLayer(short Iz, InputStruct In_Parm);
 
 /****************************************************************
  *	Data structures for the binary tree used to store part of
@@ -96,7 +97,7 @@ LaserBeam(BeamStruct * Beam_Ptr, OutStruct * Out_Ptr)
 
   printf("Beam profile:f=flat, g=Gaussian. q=quit: ");
   do
-    gets(cmd_str);
+    fgets(cmd_str, STRLEN, stdin);
   while (!strlen(cmd_str));
 
   switch (toupper(cmd_str[0])) {
@@ -126,7 +127,6 @@ LaserBeam(BeamStruct * Beam_Ptr, OutStruct * Out_Ptr)
 void
 ConvResolution(InputStruct * In_Ptr, OutStruct * Out_Ptr)
 {
-  char        in_str[STRLEN];
   ConvStruct  null_conved = NULLCONVSTRUCT;
 
   if (!Out_Ptr->allocated) {
@@ -155,9 +155,7 @@ ConvResolution(InputStruct * In_Ptr, OutStruct * Out_Ptr)
 void
 ConvError(InputStruct * In_Ptr, OutStruct * Out_Ptr)
 {
-  char        in_str[STRLEN];
   ConvStruct  null_conved = NULLCONVSTRUCT;
-  float       eps;
 
   printf("Relative convolution error\n");
   printf("Current value is %8.2g (0.001-0.1 recommended): ",
@@ -376,7 +374,6 @@ float
 A_rzFGIntegrand(float r2)
 {				/* r" in the integration. */
   float       f;
-  short       nr = ConvVar.in_ptr->nr;
   double      R, r, A_at_r2;
   LINK        link;
 
@@ -406,7 +403,6 @@ float
 Rd_raFGIntegrand(float r2)
 {				/* r" in the integration. */
   float       f;
-  short       nr = ConvVar.in_ptr->nr;
   double      R, r, Rd_at_r2;
   LINK        link;
 
@@ -436,7 +432,6 @@ float
 Rd_rFGIntegrand(float r2)
 {				/* r" in the integration. */
   float       f;
-  short       nr = ConvVar.in_ptr->nr;
   double      R, r, Rd_at_r2;
 
   Rd_at_r2 = RT_rInterp(ConvVar.out_ptr->Rd_r, r2);
@@ -459,7 +454,6 @@ float
 Tt_raFGIntegrand(float r2)
 {				/* r" in the integration. */
   float       f;
-  short       nr = ConvVar.in_ptr->nr;
   double      R, r, Tt_at_r2;
   LINK        link;
 
@@ -489,7 +483,6 @@ float
 Tt_rFGIntegrand(float r2)
 {				/* r" in the integration. */
   float       f;
-  short       nr = ConvVar.in_ptr->nr;
   double      R, r, Tt_at_r2;
 
   Tt_at_r2 = RT_rInterp(ConvVar.out_ptr->Tt_r, r2);
@@ -575,7 +568,6 @@ ConvRd_ra(InputStruct * In_Ptr,
 {
   short       irc, ia;
   double      rc, P = In_Ptr->beam.P, R = In_Ptr->beam.R;
-  double      b_max = (In_Ptr->nr - 1) * In_Ptr->dr;
 
   puts("The convolution may take a little while. Wait...");
   for (irc = 0; irc < In_Ptr->nrc; irc++) {
@@ -604,7 +596,6 @@ ConvRd_r(InputStruct * In_Ptr, OutStruct * Out_Ptr)
 {
   short       irc;
   double      rc, P = In_Ptr->beam.P, R = In_Ptr->beam.R;
-  double      b_max = (In_Ptr->nr - 1) * In_Ptr->dr;
 
   for (irc = 0; irc < In_Ptr->nrc; irc++) {
     rc = (irc + 0.5) * In_Ptr->drc;
@@ -627,7 +618,6 @@ ConvTt_ra(InputStruct * In_Ptr, OutStruct * Out_Ptr)
 {
   short       irc, ia;
   double      rc, P = In_Ptr->beam.P, R = In_Ptr->beam.R;
-  double      b_max = (In_Ptr->nr - 1) * In_Ptr->dr;
 
   puts("The convolution may take a little while. Wait...");
   for (irc = 0; irc < In_Ptr->nrc; irc++) {
@@ -656,7 +646,6 @@ ConvTt_r(InputStruct * In_Ptr, OutStruct * Out_Ptr)
 {
   short       irc;
   double      rc, P = In_Ptr->beam.P, R = In_Ptr->beam.R;
-  double      b_max = (In_Ptr->nr - 1) * In_Ptr->dr;
 
   for (irc = 0; irc < In_Ptr->nrc; irc++) {
     rc = (irc + 0.5) * In_Ptr->drc;
@@ -751,7 +740,7 @@ WriteF_rzc(InputStruct * In_Ptr,
     r = (ir + 0.5) * dr;
     for (iz = 0; iz < nz; iz++) {
       z = (iz + 0.5) * dz;
-      mua = In_Ptr->layerspecs[IzToLayer(iz, In_Ptr)].mua;
+      mua = In_Ptr->layerspecs[IzToLayer(iz, *In_Ptr)].mua;
       if (mua > 0.0)
 	fprintf(file, "%-12.4E\t%-12.4E\t%-12.4E\n",
 		r, z, A_rzc[ir][iz] / mua);
@@ -983,8 +972,6 @@ BranchOutConvCmd(char *Cmd_Str,
 		 InputStruct * In_Ptr,
 		 OutStruct * Out_Ptr)
 {
-  char        ch;
-
   ConvVar.in_ptr = In_Ptr;
   ConvVar.out_ptr = Out_Ptr;
 
@@ -1027,7 +1014,7 @@ OutputConvData(InputStruct * In_Ptr,
     do {
       printf("\n> Output convolved data (h for help) => ");
       do
-	gets(cmd_str);
+	fgets(cmd_str, STRLEN, stdin);
       while (!strlen(cmd_str));	/* avoid null string. */
       BranchOutConvCmd(cmd_str, In_Ptr, Out_Ptr);
     } while (toupper(cmd_str[0]) != 'Q');
@@ -1046,7 +1033,7 @@ A2Fconv(InputStruct * In_Ptr, double **A_rz)
 
   for (ir = 0; ir < nrc; ir++)
     for (iz = 0; iz < nz; iz++) {
-      mua = In_Ptr->layerspecs[IzToLayer(iz, In_Ptr)].mua;
+      mua = In_Ptr->layerspecs[IzToLayer(iz, *In_Ptr)].mua;
       if (mua > 0.0)
 	A_rz[ir][iz] /= mua;
     }
@@ -1064,7 +1051,7 @@ F2Aconv(InputStruct * In_Ptr, double **A_rz)
 
   for (ir = 0; ir < nrc; ir++)
     for (iz = 0; iz < nz; iz++) {
-      mua = In_Ptr->layerspecs[IzToLayer(iz, In_Ptr)].mua;
+      mua = In_Ptr->layerspecs[IzToLayer(iz, *In_Ptr)].mua;
       if (mua > 0.0)
 	A_rz[ir][iz] *= mua;
     }
@@ -1090,8 +1077,6 @@ BranchContConvCmd(char *Cmd_Str,
 		  InputStruct * In_Ptr,
 		  OutStruct * Out_Ptr)
 {
-  char        ch;
-
   ConvVar.in_ptr = In_Ptr;
   ConvVar.out_ptr = Out_Ptr;
 
@@ -1147,7 +1132,7 @@ ContourConvData(InputStruct * In_Ptr,
     do {
       printf("\n> Contour output of convolved data (h for help) => ");
       do
-	gets(cmd_str);
+	fgets(cmd_str, STRLEN, stdin);
       while (!strlen(cmd_str));	/* avoid null string. */
       BranchContConvCmd(cmd_str, In_Ptr, Out_Ptr);
     } while (toupper(cmd_str[0]) != 'Q');
@@ -1178,8 +1163,12 @@ ShowScanConvMenu(char *in_fname)
 void
 ScanConvA_r(char *Ext, InputStruct * In_Ptr, double **A_rzc)
 {
-  short       irc, iz, nrc = In_Ptr->nrc, nz = In_Ptr->nz;
-  double      r, z, drc = In_Ptr->drc, dz = In_Ptr->dz;
+  short irc, iz;
+  double r;
+  short nrc = In_Ptr->nrc;
+  short nz = In_Ptr->nz;;
+  double drc = In_Ptr->drc;
+  double dz = In_Ptr->dz;
   FILE       *file;
 
   file = GetWriteFile(Ext);
@@ -1204,8 +1193,12 @@ ScanConvA_r(char *Ext, InputStruct * In_Ptr, double **A_rzc)
 void
 ScanConvA_z(char *Ext, InputStruct * In_Ptr, double **A_rzc)
 {
-  short       irc, iz, nrc = In_Ptr->nrc, nz = In_Ptr->nz;
-  double      r, z, drc = In_Ptr->drc, dz = In_Ptr->dz;
+  short irc, iz;
+  double z;
+  short nrc = In_Ptr->nrc;
+  short nz = In_Ptr->nz;;
+  double drc = In_Ptr->drc;
+  double dz = In_Ptr->dz;
   FILE       *file;
 
   file = GetWriteFile(Ext);
@@ -1230,7 +1223,7 @@ void
 ScanConvRd_r(InputStruct * In_Ptr, double **Rd_rac)
 {
   short       irc, ia, nrc = In_Ptr->nrc, na = In_Ptr->na;
-  double      r, a, drc = In_Ptr->drc, da = In_Ptr->da;
+  double      r, drc = In_Ptr->drc, da = In_Ptr->da;
   FILE       *file;
   char        fname[STRLEN];
 
@@ -1261,7 +1254,7 @@ void
 ScanConvRd_a(InputStruct * In_Ptr, double **Rd_rac)
 {
   short       irc, ia, nrc = In_Ptr->nrc, na = In_Ptr->na;
-  double      r, a, drc = In_Ptr->drc, da = In_Ptr->da;
+  double      a, drc = In_Ptr->drc, da = In_Ptr->da;
   FILE       *file;
   char        fname[STRLEN];
 
@@ -1292,7 +1285,7 @@ void
 ScanConvTt_r(InputStruct * In_Ptr, double **Tt_rac)
 {
   short       irc, ia, nrc = In_Ptr->nrc, na = In_Ptr->na;
-  double      r, a, drc = In_Ptr->drc, da = In_Ptr->da;
+  double      r, drc = In_Ptr->drc, da = In_Ptr->da;
   FILE       *file;
   char        fname[STRLEN];
 
@@ -1323,7 +1316,7 @@ void
 ScanConvTt_a(InputStruct * In_Ptr, double **Tt_rac)
 {
   short       irc, ia, nrc = In_Ptr->nrc, na = In_Ptr->na;
-  double      r, a, drc = In_Ptr->drc, da = In_Ptr->da;
+  double      a, drc = In_Ptr->drc, da = In_Ptr->da;
   FILE       *file;
   char        fname[STRLEN];
 
@@ -1472,8 +1465,6 @@ BranchScanConvCmd(char *Cmd_Str,
 		  InputStruct * In_Ptr,
 		  OutStruct * Out_Ptr)
 {
-  char        ch;
-
   ConvVar.in_ptr = In_Ptr;
   ConvVar.out_ptr = Out_Ptr;
 
@@ -1516,7 +1507,7 @@ ScanConvData(InputStruct * In_Ptr,
     do {
       printf("\n> Scans of convolved data (h for help) => ");
       do
-	gets(cmd_str);
+	fgets(cmd_str, STRLEN, stdin);
       while (!strlen(cmd_str));	/* avoid null string. */
       BranchScanConvCmd(cmd_str, In_Ptr, Out_Ptr);
     } while (toupper(cmd_str[0]) != 'Q');

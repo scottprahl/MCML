@@ -29,7 +29,7 @@ double      BessI0(double);
 short       GetShort(short, short);
 float       GetFloat(float, float);
 Boolean     CommentLineQ(char *);
-
+void        ShowVersion
 /********************************Binary Tree*****************************/
 LINK
 FillNode(float x, float y)
