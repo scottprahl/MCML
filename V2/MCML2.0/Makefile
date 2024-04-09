@@ -15,20 +15,22 @@ all: mcml
 
 exe: mcml.exe
 
-mcml: $(M_OBJS)
-	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
+mcml:
+	$(CC) $(CFLAGS) -c mcmlgo.c -o mcmlgo.o 
+	$(CC) $(CFLAGS) -c mcmlio.c -o mcmlio.o 
+	$(CC) $(CFLAGS) -c mcmlmain.c -o mcmlmain.o 
+	$(CC) $(CFLAGS) -o $@ $(M_OBJS) $(LIBS)
 
 mcml.exe:
 	$(WINCC) $(CFLAGS) -c mcmlgo.c -o mcmlgo.o 
 	$(WINCC) $(CFLAGS) -c mcmlio.c -o mcmlio.o 
 	$(WINCC) $(CFLAGS) -c mcmlmain.c -o mcmlmain.o 
-	$(WINCC) $(CFLAGS) -c mcmlnr.c -o mcmlnr.o 
 	$(WINCC) $(CFLAGS) -o $@ $(M_OBJS) $(LIBS)
 
 # Clean targets
 clean:
 	rm -rf $(M_OBJS)
-	rm -rf $(C_OBJS)
+	rm -rf test1.mco
 
 realclean: clean
 	rm -rf mcml
@@ -36,10 +38,12 @@ realclean: clean
 	rm -rf temp1.mco
 	rm -rf temp2.mco
 
+test: mcml
+	./mcml template.mci
+
 tidy:
 	gindent $(INDENT_OPT) *.c *.h
 	rm *~
 
-
 # Phony targets
-.PHONY: all clean realclean mcml.exe tidy
+.PHONY: all clean realclean tidy mcml mcml.exe test
