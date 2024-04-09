@@ -36,7 +36,7 @@ void LaunchPhoton(double, LayerStruct *, PhotonStruct *);
 void HopDropSpin(InputStruct  *,PhotonStruct *,OutStruct *);
 void SumScaleResult(InputStruct, OutStruct *);
 void WriteResult(InputStruct, OutStruct, char *);
-
+void ShowVersion(char *version);
 
 /***********************************************************
  *	If F = 0, reset the clock and return 0.

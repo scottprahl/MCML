@@ -684,8 +684,6 @@ void HopInGlass(InputStruct  * In_Ptr,
 				PhotonStruct * Photon_Ptr,
 				OutStruct    * Out_Ptr)
 {
-  double dl;     /* step size. 1/cm */
-  
   if(Photon_Ptr->uz == 0.0) { 
 	/* horizontal photon in glass is killed. */
     Photon_Ptr->dead = 1;

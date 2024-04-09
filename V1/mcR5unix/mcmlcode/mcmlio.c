@@ -70,8 +70,6 @@ CtrPuts(char *InStr)
 #define COLWIDTH 80
 void ShowVersion(char *version)
 {
-  char str[STRLEN];
-  
   CtrPuts(" ");
   CtrPuts(
   "Monte Carlo Simulation of Light Transport in Multi-layered Turbid Media");
@@ -160,7 +158,7 @@ Boolean CheckChar(char * Str)
   size_t i=0;
   
   while(i<sl) 
-    if (Str[i]<0 || Str[i]>255)
+    if (Str[i]<0)
       nrerror("Non-ASCII file\n");
     else if(isprint(Str[i]) || isspace(Str[i])) 
       i++;
@@ -363,7 +361,7 @@ Boolean ReadOneLayer(FILE *File_Ptr,
 					 LayerStruct * Layer_Ptr,
 					 double *Z_Ptr)
 {
-  char buf[STRLEN], msg[STRLEN];
+  char buf[STRLEN];
   double d, n, mua, mus, g;	/* d is thickness. */
 
   strcpy(buf, FindDataLine(File_Ptr));
@@ -441,8 +439,6 @@ void CriticalAngle( short Num_Layers,
  ****/
 void ReadParm(FILE* File_Ptr, InputStruct * In_Ptr)
 {
-  char buf[STRLEN];
-  
   In_Ptr->Wth = WEIGHT;
   
   ReadFnameFormat(File_Ptr, In_Ptr);

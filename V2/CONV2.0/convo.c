@@ -28,7 +28,7 @@ GetWriteFile(char *Ext)
       printf("Enter output filename with extension .%s (or . to quit): ", Ext);
     else
       printf("Enter output filename (or . to quit): ");
-    fgets(fname, STRLEN, stdin);
+    scanf("%s", fname);
     if (strlen(fname) == 1 && fname[0] == '.') {
       fmode[0] = 'q';
       break;

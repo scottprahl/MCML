@@ -219,20 +219,21 @@ CommentLine(char *Buf)
 /****************************************************************
  *	Skip space or comment lines and return data line only.
  ****/
+char        global_buf[STRLEN];
+
 char       *
 FindDataLine(FILE * File_Ptr)
 {
-  char        buf[STRLEN];
 
   do {				/* skip space or comment lines. */
-    if (fgets(buf, STRLEN, File_Ptr) == NULL) {
+    if (fgets(global_buf, STRLEN, File_Ptr) == NULL) {
       printf("Incomplete data.\n");
       exit(1);
     }
-    CheckChar(buf);
-  } while (CommentLine(buf));
+    CheckChar(global_buf);
+  } while (CommentLine(global_buf));
 
-  return (buf);
+  return (global_buf);
 }
 
 /****************************************************************
@@ -458,7 +459,6 @@ ReadTt_a(FILE * File_Ptr,
 	 short Na,
 	 OutStruct * Out_Ptr)
 {
-  char        buf[STRLEN];
   short       i;
 
   for (i = 0; i < Na; i++) {

@@ -122,7 +122,7 @@ GetIsoValues(double Z_Min, double Z_Max)
 
   printf("Input an isovalue or . to stop: ");
   scanf("%s", in_str);
-  if (strlen(in_str) == 1 && in_str[0] == '.')
+  if (in_str[0] == '.')
     return (NULL);
 
   head = (IsoList) malloc(sizeof(struct Isolines));

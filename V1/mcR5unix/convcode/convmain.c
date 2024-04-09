@@ -8,17 +8,19 @@
 
 #define EPS 0.1			/* default relative error in convolution. */
 
-void        ReadMcoFile(InputStruct *, OutStruct *);
-void        OutputOrigData(InputStruct *, OutStruct *);
-void        OutputConvData(InputStruct *, OutStruct *);
-void        ContourOrigData(InputStruct *, OutStruct *);
-void        ContourConvData(InputStruct *, OutStruct *);
-void        ScanOrigData(InputStruct *, OutStruct *);
-void        ScanConvData(InputStruct *, OutStruct *);
-void        LaserBeam(BeamStruct *, OutStruct *);
-void        ConvResolution(InputStruct *, OutStruct *);
-void        ConvError(InputStruct *, OutStruct *);
-
+void ReadMcoFile(InputStruct *, OutStruct *);
+void OutputOrigData(InputStruct *, OutStruct *);
+void OutputConvData(InputStruct *, OutStruct *);
+void ContourOrigData(InputStruct *, OutStruct *);
+void ContourConvData(InputStruct *, OutStruct *);
+void ScanOrigData(InputStruct *, OutStruct *);
+void ScanConvData(InputStruct *, OutStruct *);
+void LaserBeam(BeamStruct *, OutStruct *);
+void ConvResolution(InputStruct *, OutStruct *);
+void ConvError(InputStruct *, OutStruct *);
+void FreeOrigData(InputStruct * In_Ptr, OutStruct * Out_Ptr);
+void FreeConvData(InputStruct * In_Ptr, OutStruct * Out_Ptr);
+void ShowVersion(void);
 /****************************************************************
  ****/
 void 
@@ -46,7 +48,7 @@ QuitProgram(InputStruct * In_Ptr, OutStruct * Out_Ptr)
   char        ch, cmd_str[STRLEN];
 
   printf("Do you really want to quit conv (y/n): ");
-  gets(cmd_str);
+  fgets(cmd_str, STRLEN, stdin);
   sscanf(cmd_str, "%c", &ch);
   if (toupper(ch) == 'Y') {	/* really quit. */
     if (Out_Ptr->allocated) {
@@ -139,7 +141,7 @@ BranchMainCmd(char *Cmd)
 
 /****************************************************************
  ****/
-void 
+int 
 main(void)
 {
   char        cmd_str[STRLEN];
@@ -147,9 +149,13 @@ main(void)
   ShowVersion();
   do {
     printf("\n> Main menu (h for help) => ");
-    do				/* get the command input. */
-      gets(cmd_str);
-    while (!strlen(cmd_str));
+    /* get the command input. */
+    do {
+        fgets(cmd_str, STRLEN, stdin);
+        char *newline = strchr(cmd_str, '\n');
+        if (newline) *newline = '\0';
+    } while (!strlen(cmd_str));
+
     BranchMainCmd(cmd_str);
   } while (1);
 }

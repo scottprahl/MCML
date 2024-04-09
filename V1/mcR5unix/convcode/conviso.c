@@ -19,15 +19,13 @@
  *	Return true is val is between Z[i][j] and Z[i+1][j].
  ****/
 #define INTERSECTI(val, Z, i, j) \
-  (Z[i][j] <= val && val <= Z[i+1][j] || \
-   Z[i][j] >= val && val >= Z[i+1][j])
+  ((Z[i][j] <= val && val <= Z[i+1][j]) || (Z[i][j] >= val && val >= Z[i+1][j]))
 
 /****
  *	Return true is val is between Z[i][j] and Z[i][j+1].
  ****/
 #define INTERSECTJ(val, Z, i, j) \
-  (Z[i][j] <= val && val <= Z[i][j+1] || \
-   Z[i][j] >= val && val >= Z[i][j+1])
+  ((Z[i][j] <= val && val <= Z[i][j+1]) || (Z[i][j] >= val && val >= Z[i][j+1]))
 
 FILE       *GetWriteFile(char *Ext);	/* in conho.c. */
 
@@ -249,7 +247,7 @@ GetQuadrant(double x, double y)
     return (2);			/* Include +y-axis. */
   else if (x < 0 && y <= 0)
     return (3);			/* Include -x-axis. */
-  else if (x >= 0 && y < 0)
+  else
     return (-1);		/* Include -y-axis. */
 }
 
@@ -472,7 +470,6 @@ void
 FreeIsoLines(IsoList IsoHead)
 {
   IsoList     this_iso;
-  PairList    pair_head;
 
   while (IsoHead != NULL) {
     FreePairs(IsoHead->pairs);

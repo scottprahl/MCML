@@ -85,7 +85,7 @@ GetWriteFile(char *Ext)
 
   do {
     printf("Enter output filename with extension .%s (or . to quit): ", Ext);
-    gets(fname);
+    scanf("%s", fname);
     if (strlen(fname) == 1 && fname[0] == '.') {
       fmode[0] = 'q';
       break;
@@ -96,7 +96,7 @@ GetWriteFile(char *Ext)
       printf("File %s exists, %s",
 	     fname, "w=overwrite, a=append, n=new filename, q=quit: ");
       do
-	gets(fmode);
+	fgets(fmode, STRLEN, stdin);
       while (!strlen(fmode));	/* avoid null line. */
       fclose(file);
     }
@@ -739,8 +739,6 @@ BranchOutCmd(char *Cmd_Str,
 	     InputStruct * In_Ptr,
 	     OutStruct * Out_Ptr)
 {
-  char        ch;
-
   switch (toupper(Cmd_Str[0])) {
   case 'I':
     WriteInParm(In_Ptr);
@@ -787,7 +785,7 @@ OutputOrigData(InputStruct * In_Ptr,
     do {
       printf("\n> Output mcml data (h for help) => ");
       do
-	gets(cmd_str);
+	fgets(cmd_str, STRLEN, stdin);
       while (!strlen(cmd_str));	/* avoid null string. */
       BranchOutCmd(cmd_str, In_Ptr, Out_Ptr);
     } while (toupper(cmd_str[0]) != 'Q');
@@ -814,7 +812,6 @@ void
 A2F(InputStruct * In_Ptr, double **A_rz)
 {
   short       nz = In_Ptr->nz, nr = In_Ptr->nr;
-  double      dr = In_Ptr->dr, dz = In_Ptr->dz;
   short       ir, iz;
   double      mua;
 
@@ -833,7 +830,6 @@ void
 F2A(InputStruct * In_Ptr, double **A_rz)
 {
   short       nz = In_Ptr->nz, nr = In_Ptr->nr;
-  double      dr = In_Ptr->dr, dz = In_Ptr->dz;
   short       ir, iz;
   double      mua;
 
@@ -852,8 +848,6 @@ BranchContOrigCmd(char *Cmd_Str,
 		  InputStruct * In_Ptr,
 		  OutStruct * Out_Ptr)
 {
-  char        ch;
-
   switch (toupper(Cmd_Str[0])) {
   case 'A':
     IsoPlot(Out_Ptr->A_rz, In_Ptr->nr - 1, In_Ptr->nz - 1,
@@ -896,7 +890,7 @@ ContourOrigData(InputStruct * In_Ptr,
     do {
       printf("\n> Contour output of mcml data (h for help) => ");
       do
-	gets(cmd_str);
+	fgets(cmd_str, STRLEN, stdin);
       while (!strlen(cmd_str));	/* avoid null string. */
       BranchContOrigCmd(cmd_str, In_Ptr, Out_Ptr);
     } while (toupper(cmd_str[0]) != 'Q');
@@ -927,7 +921,7 @@ void
 ScanOrigA_r(char *Ext, InputStruct * In_Ptr, double **A_rz)
 {
   short       ir, iz, nr = In_Ptr->nr, nz = In_Ptr->nz;
-  double      r, z, dr = In_Ptr->dr, dz = In_Ptr->dz;
+  double      r, dr = In_Ptr->dr, dz = In_Ptr->dz;
   FILE       *file;
 
   file = GetWriteFile(Ext);
@@ -953,7 +947,7 @@ void
 ScanOrigA_z(char *Ext, InputStruct * In_Ptr, double **A_rz)
 {
   short       ir, iz, nr = In_Ptr->nr, nz = In_Ptr->nz;
-  double      r, z, dr = In_Ptr->dr, dz = In_Ptr->dz;
+  double      z, dr = In_Ptr->dr, dz = In_Ptr->dz;
   FILE       *file;
 
   file = GetWriteFile(Ext);
@@ -978,7 +972,7 @@ void
 ScanOrigRd_r(InputStruct * In_Ptr, double **Rd_ra)
 {
   short       ir, ia, nr = In_Ptr->nr, na = In_Ptr->na;
-  double      r, a, dr = In_Ptr->dr, da = In_Ptr->da;
+  double      r, dr = In_Ptr->dr, da = In_Ptr->da;
   FILE       *file;
   char        fname[STRLEN];
 
@@ -1005,7 +999,7 @@ void
 ScanOrigRd_a(InputStruct * In_Ptr, double **Rd_ra)
 {
   short       ir, ia, nr = In_Ptr->nr, na = In_Ptr->na;
-  double      r, a, dr = In_Ptr->dr, da = In_Ptr->da;
+  double      a, dr = In_Ptr->dr, da = In_Ptr->da;
   FILE       *file;
   char        fname[STRLEN];
 
@@ -1032,7 +1026,7 @@ void
 ScanOrigTt_r(InputStruct * In_Ptr, double **Tt_ra)
 {
   short       ir, ia, nr = In_Ptr->nr, na = In_Ptr->na;
-  double      r, a, dr = In_Ptr->dr, da = In_Ptr->da;
+  double      r, dr = In_Ptr->dr, da = In_Ptr->da;
   FILE       *file;
   char        fname[STRLEN];
 
@@ -1059,7 +1053,7 @@ void
 ScanOrigTt_a(InputStruct * In_Ptr, double **Tt_ra)
 {
   short       ir, ia, nr = In_Ptr->nr, na = In_Ptr->na;
-  double      r, a, dr = In_Ptr->dr, da = In_Ptr->da;
+  double      a, dr = In_Ptr->dr, da = In_Ptr->da;
   FILE       *file;
   char        fname[STRLEN];
 
@@ -1175,8 +1169,6 @@ BranchScanOrigCmd(char *Cmd_Str,
 		  InputStruct * In_Ptr,
 		  OutStruct * Out_Ptr)
 {
-  char        ch;
-
   switch (toupper(Cmd_Str[0])) {
   case 'A':
     BranchScanOrigA(Cmd_Str, In_Ptr, Out_Ptr);
@@ -1214,7 +1206,7 @@ ScanOrigData(InputStruct * In_Ptr,
     do {
       printf("\n> Scans of mcml data (h for help) => ");
       do
-	gets(cmd_str);
+	fgets(cmd_str, STRLEN, stdin);
       while (!strlen(cmd_str));	/* avoid null string. */
       BranchScanOrigCmd(cmd_str, In_Ptr, Out_Ptr);
     } while (toupper(cmd_str[0]) != 'Q');

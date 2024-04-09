@@ -1,25 +1,39 @@
-# Use option "-g" to debug.
-CFLAGS = 
-CC=cc
-RM=/bin/rm -rf
-DEPS=
-LOCAL_LIBRARIES= -lm
-OBJS = convmain.o convi.o convo.o convconv.o conviso.o convnr.o 
+# Compiler and flags
+CC = cc
+CFLAGS = -g -Wall -ansi -fno-common
 
-.c.o:
-	 $(RM) $@
-	 $(CC) -c $(CFLAGS) $*.c
-#####
+# Target executable
+TARGET = conv1
 
+# Source files and corresponding object files
+SRCS = convconv.c convi.c conviso.c convmain.c  convnr.c convo.c
+OBJS = $(SRCS:.c=.o)
 
-all : conv 
+# Libraries
+LIBS = -lm
 
+# Default target
+all: $(TARGET)
 
-conv: $(OBJS)
-	 $(RM) $@
-	 $(CC)  -o  $@ $(OBJS) $(LOCAL_LIBRARIES)
+conv1.exe:
+	make clean
+	make CC="x86_64-w64-mingw32-gcc" conv1
 
+# Rule to build the executable
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
 
-clean::
-	 $(RM) conv $(OBJS)
+# Rule to compile source files
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
+# Clean targets
+clean:
+	$(RM) $(OBJS)
+
+realclean: clean
+	$(RM) $(TARGET)
+	$(RM) $(TARGET).exe
+
+# Phony targets
+.PHONY: all clean realclean
