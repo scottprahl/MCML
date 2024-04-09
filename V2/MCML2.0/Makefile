@@ -3,7 +3,7 @@ CC = cc
 CFLAGS = -g -Wall -ansi -fno-common
 
 # Target executable
-TARGET = mcml
+TARGET = mcml2
 
 # Source files and corresponding object files
 SRCS = mcmlgo.c mcmlio.c mcmlmain.c
@@ -15,9 +15,9 @@ LIBS = -lm
 # Default target
 all: $(TARGET)
 
-mcml.exe:
+mcml2.exe:
 	make clean
-	make CC="x86_64-w64-mingw32-gcc" mcml
+	make CC="x86_64-w64-mingw32-gcc" mcml2
 
 # Rule to build the executable
 $(TARGET): $(OBJS)

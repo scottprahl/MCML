@@ -3,7 +3,7 @@ CC = cc
 CFLAGS = -g -Wall -ansi -fno-common
 
 # Target executable
-TARGET = conv
+TARGET = conv2
 
 # Source files and corresponding object files
 SRCS = convconv.c  convi.c conviso.c convlib.c convmain.c  convo.c
@@ -15,9 +15,9 @@ LIBS = -lm
 # Default target
 all: $(TARGET)
 
-conv.exe:
+conv2.exe:
 	make clean
-	make CC="x86_64-w64-mingw32-gcc" conv
+	make CC="x86_64-w64-mingw32-gcc" conv2
 
 # Rule to build the executable
 $(TARGET): $(OBJS)
