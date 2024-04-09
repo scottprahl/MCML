@@ -206,7 +206,7 @@ LaserBeam(BeamStru * Beam_Ptr)
 
   printf("Beam profile:f=flat, g=Gaussian, a=arbitrary, q=quit: ");
   do
-    fgets(cmd_str, STRLEN, stdin);
+    scanf("%s", cmd_str);
   while (!strlen(cmd_str));
 
   switch (toupper(cmd_str[0])) {

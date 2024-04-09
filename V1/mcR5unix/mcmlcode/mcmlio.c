@@ -531,7 +531,7 @@ void CheckParm(FILE* File_Ptr, InputStruct * In_Ptr)
   NameLink head = NULL;
   Boolean name_taken;/* output files share the same */
 					/* file name.*/
-  char msg[STRLEN];
+  char msg[STRLEN+24];
   
   num_runs = ReadNumRuns(File_Ptr);
   for(i_run=1; i_run<=num_runs; i_run++)  {

@@ -48,7 +48,7 @@ QuitProgram(InputStruct * In_Ptr, OutStruct * Out_Ptr)
   char        ch, cmd_str[STRLEN];
 
   printf("Do you really want to quit conv (y/n): ");
-  fgets(cmd_str, STRLEN, stdin);
+  scanf("%s", cmd_str);
   sscanf(cmd_str, "%c", &ch);
   if (toupper(ch) == 'Y') {	/* really quit. */
     if (Out_Ptr->allocated) {
@@ -151,7 +151,7 @@ main(void)
     printf("\n> Main menu (h for help) => ");
     /* get the command input. */
     do {
-        fgets(cmd_str, STRLEN, stdin);
+        scanf("%s", cmd_str);
         char *newline = strchr(cmd_str, '\n');
         if (newline) *newline = '\0';
     } while (!strlen(cmd_str));

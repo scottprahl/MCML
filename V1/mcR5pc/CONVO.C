@@ -791,7 +791,7 @@ OutputOrigData(InputStruct * In_Ptr,
     do {
       printf("\n> Output mcml data (h for help) => ");
       do
-	fgets(cmd_str, STRLEN, stdin);
+	scanf("%s", cmd_str);
       while (!strlen(cmd_str));	/* avoid null string. */
       BranchOutCmd(cmd_str, In_Ptr, Out_Ptr);
     } while (toupper(cmd_str[0]) != 'Q');
@@ -896,7 +896,7 @@ ContourOrigData(InputStruct * In_Ptr,
     do {
       printf("\n> Contour output of mcml data (h for help) => ");
       do
-	fgets(cmd_str, STRLEN, stdin);
+	scanf("%s", cmd_str);
       while (!strlen(cmd_str));	/* avoid null string. */
       BranchContOrigCmd(cmd_str, In_Ptr, Out_Ptr);
     } while (toupper(cmd_str[0]) != 'Q');
@@ -1212,7 +1212,7 @@ ScanOrigData(InputStruct * In_Ptr,
     do {
       printf("\n> Scans of mcml data (h for help) => ");
       do
-	fgets(cmd_str, STRLEN, stdin);
+	scanf("%s", cmd_str);
       while (!strlen(cmd_str));	/* avoid null string. */
       BranchScanOrigCmd(cmd_str, In_Ptr, Out_Ptr);
     } while (toupper(cmd_str[0]) != 'Q');

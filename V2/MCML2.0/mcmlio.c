@@ -1139,7 +1139,7 @@ InterReadMediumList(InStru * In_Ptr)
     exit(1);
   }
   for (i = 0; i < In_Ptr->num_media; i++) {
-    printf("Specify meidum %d: \n  Medium name: ", i + 1);
+    printf("Specify medium %d: \n  Medium name: ", i + 1);
     fgets(string, STRLEN, stdin);
     do {
       name_taken = 0;
@@ -1204,13 +1204,13 @@ InterReadFnameFormat(InStru * In_Ptr)
 
   do {
     printf("Specify output filename with extension .mco: ");
-    fgets(fname, STRLEN, stdin);
+    scanf("%s", fname);
     fmode[0] = 'w';
 
     if ((file = fopen(fname, "r")) != NULL) { /* file exists. */
       printf("File %s exists, %s", fname, "w=overwrite, n=new filename: ");
       do
-        fgets(fmode, STRLEN, stdin);
+        scanf("%s", fmode);
       while (!strlen(fmode));   /* avoid null line. */
       fclose(file);
     }
@@ -1348,12 +1348,12 @@ InterReadLayerSpecs(InStru * In_Ptr)
   printf("\nSpecify layer list. ");
   PrintMediumNames(In_Ptr);
   printf("\nTotal number of layers: ");
+  scanf("%s", string);
 
-  fgets(string, STRLEN, stdin);
   while (sscanf(string, "%hd", &In_Ptr->num_layers) != 1
 	 || In_Ptr->num_layers <= 0) {
     printf("Invalid layer number. Input again: ");
-    fgets(string, STRLEN, stdin);
+    scanf("%s", string);
   }
 
   /* Allocate an array for the layer parameters. */
@@ -1369,8 +1369,8 @@ InterReadLayerSpecs(InStru * In_Ptr)
     while (error) {
       error = 0;
       if (i == 0) {
-	printf("\n  Name of upper ambient medium: ");
-	fgets(string, STRLEN, stdin);
+	     printf("\n  Name of upper ambient medium: ");
+         scanf("%s", string);
 	sscanf(string, "%s", name);
       } else if (i == In_Ptr->num_layers + 1) {
 	printf("\n  Name of lower ambient medium: ");

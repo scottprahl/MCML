@@ -3717,7 +3717,7 @@ ExtractOrigData(InStru * In_Ptr,
 
     printf("Specify quantity to be extracted (or . to quit): ");
     do
-      fgets(cmd_str, STRLEN, stdin);
+      scanf("%s", cmd_str);
     while (!strlen(cmd_str));     /* avoid null string. */
     BranchOrigQuantity(ToUpperString(cmd_str), In_Ptr, Out_Ptr, Conv_Ptr);
   }
@@ -3832,7 +3832,7 @@ ExtractConvData(InStru * In_Ptr,
 
     printf("Specify quantity to be extracted (or . to quit): ");
     do
-      fgets(cmd_str, STRLEN, stdin);
+      scanf("%s", cmd_str);
     while (!strlen(cmd_str));     /* avoid null string. */
     BranchConvQuantity(ToUpperString(cmd_str), In_Ptr, Out_Ptr, Conv_Ptr);
   }

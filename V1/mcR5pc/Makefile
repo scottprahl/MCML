@@ -1,9 +1,10 @@
 # Compiler and flags
 CC = cc
 CFLAGS = -g -Wall -ansi -fno-common
+WINCC = x86_64-w64-mingw32-gcc
 
 # Target executable
-TARGET = mcml1 conv1
+TARGET = mcml_v1 conv_v1
 
 # Source files and corresponding object files
 M_SRCS = mcmlgo.c mcmlio.c mcmlmain.c mcmlnr.c
@@ -15,27 +16,34 @@ C_OBJS = $(C_SRCS:.c=.o)
 # Libraries
 LIBS = -lm
 
-# Default target
-all: $(TARGET)
+all: mcml_v1 conv_v1
 
-mcml1.exe:
-	make clean
-	make CC="x86_64-w64-mingw32-gcc" mcml1
+exe: mcml_v1.exe conv_v1.exe
 
-conv1.exe:
-	make clean
-	make CC="x86_64-w64-mingw32-gcc" conv1
-
-# Rule to build the executable
-mcml1: $(M_OBJS)
+mcml_v1: $(M_OBJS)
 	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
 
-conv1: $(C_OBJS)
+conv_v1: $(C_OBJS)
 	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
 
-# Rule to compile source files
+mcml_v1.exe:
+	$(WINCC) $(CFLAGS) -c mcmlgo.c -o mcmlgo.o 
+	$(WINCC) $(CFLAGS) -c mcmlio.c -o mcmlio.o 
+	$(WINCC) $(CFLAGS) -c mcmlmain.c -o mcmlmain.o 
+	$(WINCC) $(CFLAGS) -c mcmlnr.c -o mcmlnr.o 
+	$(WINCC) $(CFLAGS) -o $@ $(M_OBJS) $(LIBS)
+
+conv_v1.exe:
+	$(WINCC) $(CFLAGS) -c convconv.c -o convconv.o 
+	$(WINCC) $(CFLAGS) -c convi.c -o convi.o 
+	$(WINCC) $(CFLAGS) -c conviso.c -o conviso.o 
+	$(WINCC) $(CFLAGS) -c convmain.c -o convmain.o 
+	$(WINCC) $(CFLAGS) -c convnr.c -o convnr.o 
+	$(WINCC) $(CFLAGS) -c convo.c -o convo.o 
+	$(WINCC) $(CFLAGS) -o $@ $(C_OBJS) $(LIBS)
+
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 # Clean targets
 clean:
@@ -43,10 +51,12 @@ clean:
 	rm -rf $(C_OBJS)
 
 realclean: clean
-	rm -rf mcml1
-	rm -rf mcml1.exe
-	rm -rf conv1
-	rm -rf conv1.exe
+	rm -rf mcml_v1
+	rm -rf mcml_v1.exe
+	rm -rf conv_v1
+	rm -rf conv_v1.exe
+	rm -rf temp1.mco
+	rm -rf temp2.mco
 
 # Phony targets
-.PHONY: all clean realclean
+.PHONY: all clean realclean mcml_v1.exe conv_v1.exe

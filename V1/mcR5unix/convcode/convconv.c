@@ -96,7 +96,7 @@ LaserBeam(BeamStruct * Beam_Ptr, OutStruct * Out_Ptr)
 
   printf("Beam profile:f=flat, g=Gaussian. q=quit: ");
   do
-    fgets(cmd_str, STRLEN, stdin);
+    scanf("%s", cmd_str);
   while (!strlen(cmd_str));
 
   switch (toupper(cmd_str[0])) {
@@ -1013,7 +1013,7 @@ OutputConvData(InputStruct * In_Ptr,
     do {
       printf("\n> Output convolved data (h for help) => ");
       do
-	fgets(cmd_str, STRLEN, stdin);
+	scanf("%s", cmd_str);
       while (!strlen(cmd_str));	/* avoid null string. */
       BranchOutConvCmd(cmd_str, In_Ptr, Out_Ptr);
     } while (toupper(cmd_str[0]) != 'Q');
@@ -1131,7 +1131,7 @@ ContourConvData(InputStruct * In_Ptr,
     do {
       printf("\n> Contour output of convolved data (h for help) => ");
       do
-	fgets(cmd_str, STRLEN, stdin);
+	scanf("%s", cmd_str);
       while (!strlen(cmd_str));	/* avoid null string. */
       BranchContConvCmd(cmd_str, In_Ptr, Out_Ptr);
     } while (toupper(cmd_str[0]) != 'Q');
@@ -1498,7 +1498,7 @@ ScanConvData(InputStruct * In_Ptr,
     do {
       printf("\n> Scans of convolved data (h for help) => ");
       do
-	fgets(cmd_str, STRLEN, stdin);
+	scanf("%s", cmd_str);
       while (!strlen(cmd_str));	/* avoid null string. */
       BranchScanConvCmd(cmd_str, In_Ptr, Out_Ptr);
     } while (toupper(cmd_str[0]) != 'Q');

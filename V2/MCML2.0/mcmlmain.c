@@ -26,7 +26,7 @@
 void        InitOutputData(InStru *, OutStru *);
 void	    CtrPuts(char *);
 char       *FindDataLine(FILE *);
-void        InterReadParam(InStru *);
+void        EnterReadParam(InStru *);
 void        LaunchPhoton(double, InStru *, OutStru *, PhotonStru *);
 void        AboutMCML(void);
 void        IOResult(FILE *, InStru *, OutStru *, char);
@@ -382,7 +382,7 @@ void QuitProgram(void)
   char        cmd_str[STRLEN];
 
   printf("Do you really want to quit MCML? (y/n): ");
-  fgets(cmd_str, STRLEN, stdin);
+  scanf("%s", cmd_str);
   if (toupper(cmd_str[0]) == 'Y')      /* really quit. */
     exit(0);
 }
@@ -424,7 +424,7 @@ BranchMainMenu(char *string, InStru * In_Ptr, OutStru * Out_Ptr)
     break;
 
   case 'I':			/* interactive. */
-    InterReadParam(In_Ptr);
+    EnterReadParam(In_Ptr);
     if (RunChangedInput(In_Ptr)) {
       InitOutputData(In_Ptr, Out_Ptr);
       DoOneRun(0, In_Ptr, Out_Ptr, 0);
