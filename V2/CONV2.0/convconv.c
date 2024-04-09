@@ -138,7 +138,7 @@ void GetArbitraryBeam(BeamStru *Beam_Ptr)
     scanf("%s", Fname);
     if (strlen(Fname) == 1 && Fname[0] == '.')
         return;
-    if (!(file = fopen(Fname, "r")))
+    if (!(file = fopen(Fname, "rb")))
         return;
 
     strcpy(Beam_Ptr->pro_fname, Fname);

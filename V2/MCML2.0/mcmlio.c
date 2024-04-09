@@ -323,7 +323,7 @@ FILE *GetFile(char *Fname, char *Version)
             return (NULL);      /* return a NULL pointer if '.' entered. */
 
         /* open the file & check the version. */
-        if ((Fp = fopen(Fname, "r")) == NULL)
+        if ((Fp = fopen(Fname, "rb")) == NULL)
             puts("File does not exist.");       /* cannot open the file. */
         else {
             if (CheckFileVersionQ(Fp, Version))
@@ -1176,7 +1176,7 @@ void InterReadFnameFormat(InStru *In_Ptr)
         scanf("%s", fname);
         fmode[0] = 'w';
 
-        if ((file = fopen(fname, "r")) != NULL) {       /* file exists. */
+        if ((file = fopen(fname, "rb")) != NULL) {       /* file exists. */
             printf("File %s exists, %s", fname, "w=overwrite, n=new filename: ");
             do
                 scanf("%s", fmode);
