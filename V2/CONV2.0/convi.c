@@ -714,7 +714,7 @@ Boolean ReadSourceTypeQ(FILE *Fp, InStru *In_Ptr)
         return (1);
     }
     else {
-        printf("Unknow photon source type. \n");
+        printf("Unknown photon source type. \n");
         return (0);
     }
 }

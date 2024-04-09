@@ -925,6 +925,7 @@ Boolean ReadSourceTypeQ(FILE *Fp, InStru *In_Ptr)
         printf("Reading photon source type. \n");
         return (0);
     }
+
     if (strcmp(b_type, "pencil") == 0) {
         In_Ptr->source_type = pencil;
         return (1);
@@ -934,7 +935,7 @@ Boolean ReadSourceTypeQ(FILE *Fp, InStru *In_Ptr)
         return (1);
     }
     else {
-        printf("Unknow photon source type. \n");
+        printf("Unknown photon source type. \n");
         return (0);
     }
 }
