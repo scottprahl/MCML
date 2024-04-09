@@ -63,7 +63,7 @@ clean:
 	cd CONV2.0 && make clean
 
 realclean: clean
-	rm -rf mcml mcml.exe conv conv.exe 
+	rm -rf mcml mcml.exe conv conv.exe test1.mco
 
 # Phony targets
 .PHONY: all clean realclean exe test
