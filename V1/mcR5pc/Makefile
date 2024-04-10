@@ -1,7 +1,7 @@
-# Compiler and flags
 CC = cc
 CFLAGS = -g -Wall -ansi -fno-common
 WINCC = x86_64-w64-mingw32-gcc
+LIBS = -lm
 
 # Target executable
 TARGET = mcml_v1 conv_v1
@@ -13,8 +13,7 @@ M_OBJS = $(M_SRCS:.c=.o)
 C_SRCS = convconv.c  convi.c conviso.c convmain.c convnr.c convo.c
 C_OBJS = $(C_SRCS:.c=.o)
 
-# Libraries
-LIBS = -lm
+XTRA = ../Mcman.pdf ../Mcman.txt ../README.md
 
 all: mcml_v1 conv_v1
 
@@ -42,10 +41,26 @@ conv_v1.exe:
 	$(WINCC) $(CFLAGS) -c convo.c -o convo.o 
 	$(WINCC) $(CFLAGS) -o $@ $(C_OBJS) $(LIBS)
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c -o $@ $<
+# dist and windist be called from parent directory because VERSION is exported from there
+dist:
+	mkdir -p    mcR5pc-src-$(VERSION)
+	cp Makefile mcR5pc-src-$(VERSION)
+	cp $(XTRA)  mcR5pc-src-$(VERSION)
+	cp *.c      mcR5pc-src-$(VERSION)
+	cp *.h      mcR5pc-src-$(VERSION)
+	cp *.mco    mcR5pc-src-$(VERSION)
+	cp *.mci    mcR5pc-src-$(VERSION)
+	zip -r mcR5pc-src-$(VERSION) mcR5pc-src-$(VERSION)
+	rm -rf mcR5pc-src-$(VERSION)
 
-# Clean targets
+windist: conv_v1.exe mcml_v1.exe
+	mkdir -p        mcR5pc-win-binary-$(VERSION)
+	cp $(XTRA)      mcR5pc-win-binary-$(VERSION)
+	cp mcml_v1.exe  mcR5pc-win-binary-$(VERSION)
+	cp conv_v1.exe  mcR5pc-win-binary-$(VERSION)
+	zip -r mcR5pc-win-binary-$(VERSION) mcR5pc-win-binary-$(VERSION)
+	rm -rf mcR5pc-win-binary-$(VERSION)
+
 clean:
 	rm -rf $(M_OBJS)
 	rm -rf $(C_OBJS)
@@ -59,4 +74,4 @@ realclean: clean
 	rm -rf temp2.mco
 
 # Phony targets
-.PHONY: all clean realclean mcml_v1.exe conv_v1.exe
+.PHONY: all clean realclean mcml_v1.exe conv_v1.exe dist windist

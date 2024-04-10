@@ -2,19 +2,11 @@
 CC = cc
 CFLAGS = -g -Wall -ansi -fno-common
 WINCC = x86_64-w64-mingw32-gcc
-
-# Target executable
-TARGET = mcml_v1 conv_v1
+LIBS = -lm
 
 # Source files and corresponding object files
 M_SRCS = mcmlgo.c mcmlio.c mcmlmain.c mcmlnr.c
 M_OBJS = $(M_SRCS:.c=.o)
-
-C_SRCS = convconv.c  convi.c conviso.c convmain.c convnr.c convo.c
-C_OBJS = $(C_SRCS:.c=.o)
-
-# Libraries
-LIBS = -lm
 
 all: mcml_v1
 
@@ -30,13 +22,11 @@ mcml_v1.exe:
 	$(WINCC) $(CFLAGS) -c mcmlnr.c -o mcmlnr.o 
 	$(WINCC) $(CFLAGS) -o $@ $(M_OBJS) $(LIBS)
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c -o $@ $<
+test:
+	./mcml_v1 template.mci
 
-# Clean targets
 clean:
 	rm -rf $(M_OBJS)
-	rm -rf $(C_OBJS)
 
 realclean: clean
 	rm -rf mcml_v1
@@ -45,4 +35,4 @@ realclean: clean
 	rm -rf temp2.mco
 
 # Phony targets
-.PHONY: all clean realclean mcml_v1.exe
+.PHONY: all clean realclean exe test
