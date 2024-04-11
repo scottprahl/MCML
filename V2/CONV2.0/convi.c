@@ -93,19 +93,31 @@ char *FindDataLine(FILE *File_Ptr)
  *      Get the filename and open it for reading, retry until the
  *      file can be opened, or a '.' is input.
  ****/
-FILE *GetFile(char *Fname)
+FILE       *
+GetFile(char *Fname)
 {
-    FILE *file = NULL;
+  FILE       *file = NULL;
 
     do {
-        printf("Input filename of mcml output (or . to quit): ");
+        printf("Input filename of mcml output(or . to quit): ");
         scanf("%s", Fname);
+
         if (strlen(Fname) == 1 && Fname[0] == '.')
             break;
 
-        file = fopen(Fname, "r");
-    } while (file == NULL);
+        if (strstr(Fname, ".mci")) {
+            printf("Not the input file for mcml but the output file!\n\n");
+            continue;
+        }
 
+        file = fopen(Fname, "r");
+
+        if (file == NULL) {
+            printf("Could not find '%s' to open!\n\n", Fname);
+        }
+
+    } while (file == NULL);
+    
     return (file);
 }
 
