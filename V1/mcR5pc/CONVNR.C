@@ -190,13 +190,13 @@ BessI0(double x)
 short
 GetShort(short Lo, short Hi)
 {
-  char        in_str[STRLEN];
   short       x;
 
-  do {
-    scanf("%s", in_str);
-    sscanf(in_str, "%hd", &x);
-  } while (x < Lo || x > Hi);
+  scanf("%hd", &x);
+  while (x < Lo || x > Hi) {
+    printf("...Parameter out of range.  Try again: ");
+    scanf("%hd", &x);
+  }
   return (x);
 }
 
@@ -205,12 +205,12 @@ GetShort(short Lo, short Hi)
 float
 GetFloat(float Lo, float Hi)
 {
-  char        in_str[STRLEN];
   float       x;
 
-  do {
-    scanf("%s", in_str);
-    sscanf(in_str, "%f", &x);
-  } while (x < Lo || x > Hi);
+  scanf("%f", &x);
+  while (x < Lo || x > Hi) {
+    printf("...Parameter out of range.  Try again: ");
+    scanf("%f", &x);
+  }
   return (x);
 }

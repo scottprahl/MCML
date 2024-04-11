@@ -238,36 +238,32 @@ double BessI0(double x)
     return ans;
 }
 
-/**************************************************************************
+/****************************************************************
  ****/
-short GetShort(short Lo, short Hi)
+short
+GetShort(short Lo, short Hi)
 {
-    char in_str[STRLEN];
     short x;
 
-    scanf("%s", in_str);
-    sscanf(in_str, "%hd", &x);
+    scanf("%hd", &x);
     while (x < Lo || x > Hi) {
-        printf("...Wrong paramter.  Input again: ");
-        scanf("%s", in_str);
-        sscanf(in_str, "%hd", &x);
+        printf("...Parameter out of range.  Try again: ");
+        scanf("%hd", &x);
     }
     return (x);
 }
 
-/**************************************************************************
+/****************************************************************
  ****/
-float GetFloat(float Lo, float Hi)
+float
+GetFloat(float Lo, float Hi)
 {
-    char in_str[STRLEN];
-    float x;
-
-    scanf("%s", in_str);
-    sscanf(in_str, "%f", &x);
+    float       x;
+    
+    scanf("%f", &x);
     while (x < Lo || x > Hi) {
-        printf("...Wrong paramter.  Input again: ");
-        scanf("%s", in_str);
-        sscanf(in_str, "%f", &x);
+        printf("...Parameter out of range.  Try again: ");
+        scanf("%f", &x);
     }
     return (x);
 }
