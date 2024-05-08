@@ -33,7 +33,7 @@ CenterStr(short int Wid,
  *	address, program version, year.
  ****/
 #define COLWIDTH 80
-void 
+void
 ShowVersion(void)
 {
   char        str[STRLEN];
@@ -56,21 +56,21 @@ ShowVersion(void)
   CenterStr(COLWIDTH, "Providence/St. Vincent Hospital", str); puts(str);
   CenterStr(COLWIDTH, "9205 SW Barnes Rd., Portland, OR 97225", str); puts(str);
   CenterStr(COLWIDTH, "Email: sjacques@ece.ogi.edu", str); puts(str);
-  CenterStr(COLWIDTH, "URL: http://omlc.ogi.edu/staff/jacques.html", str); 
+  CenterStr(COLWIDTH, "URL: http://omlc.ogi.edu/staff/jacques.html", str);
   puts(str);
   puts("");
 
-  CenterStr(COLWIDTH, 
+  CenterStr(COLWIDTH,
   "Please cite the following article in your publications:", str); puts(str);
-  CenterStr(COLWIDTH, 
+  CenterStr(COLWIDTH,
   "L.-H. Wang, S. L. Jacques, and L.-Q. Zheng, ", str); puts(str);
-  CenterStr(COLWIDTH, 
-  "CONV - Convolution for responses to a finite diameter photon beam", str); 
+  CenterStr(COLWIDTH,
+  "CONV - Convolution for responses to a finite diameter photon beam", str);
   puts(str);
-  CenterStr(COLWIDTH, 
-  "incident on multi-layered tissues, Computer Methods and Programs in", str); 
+  CenterStr(COLWIDTH,
+  "incident on multi-layered tissues, Computer Methods and Programs in", str);
   puts(str);
-  CenterStr(COLWIDTH, 
+  CenterStr(COLWIDTH,
   "Biomedicine 54, 141-150 (1997).", str); puts(str);
 }
 #undef COLWIDTH
@@ -85,36 +85,35 @@ ShowVersion(void)
 FILE       *
 GetWriteFile(char *Ext)
 {
-  FILE       *file;
-  char        fname[STRLEN], fmode[STRLEN];
+    FILE       *file;
+    char        fname[STRLEN], fmode[STRLEN];
 
-  do {
-    printf("Enter output filename with extension .%s (or . to quit): ", Ext);
-    scanf("%s", fname);
+    do {
+        printf("Enter output filename with extension .%s (or . to quit): ", Ext);
+        scanf("%s", fname);
 
-    if (strlen(fname) == 1 && fname[0] == '.') {
-      fmode[0] = 'q';
-      break;
-    } else
-      fmode[0] = 'w';
+        if (strlen(fname) == 1 && fname[0] == '.') {
+            fmode[0] = 'q';
+            break;
+        } else
+            fmode[0] = 'w';
 
-    if ((file = fopen(fname, "r")) != NULL) {	/* file exists. */
-      printf("File %s exists, %s",
-	     fname, "w=overwrite, a=append, n=new filename, q=quit: ");
-      do
-	    scanf("%s", fmode);
-      while (!strlen(fmode));	/* avoid null line. */
-      fclose(file);
-    }
-  } while (fmode[0] != 'w' && fmode[0] != 'a' && fmode[0] != 'q');
+        if ((file = fopen(fname, "r")) != NULL) {  /* file exists. */
+            printf("File '%s' exists (w=overwrite, a=append, n=new filename, q=quit): ", fname);
+            do {
+                scanf("%s", fmode);
+            } while (!strlen(fmode)); /* avoid null line. */
+            fclose(file);
+        }
+    } while (fmode[0] != 'w' && fmode[0] != 'a' && fmode[0] != 'q');
 
-  if (fmode[0] != 'q')
-    file = fopen(fname, fmode);
-  else
-    file = NULL;
+    if (fmode[0] != 'q')
+        file = fopen(fname, fmode);
+    else
+        file = NULL;
 
-  strcpy(Ext, fname);
-  return (file);		/* could be NULL. */
+    strcpy(Ext, fname);
+    return (file);  /* could be NULL. */
 }
 
 /****************************************************************
@@ -122,7 +121,7 @@ GetWriteFile(char *Ext)
  *
  *	Use the center of box.
  ****/
-short 
+short
 IzToLayer(short Iz,
 	  InputStruct * In_Ptr)
 {
@@ -141,7 +140,7 @@ IzToLayer(short Iz,
  *	Write the input parameter for Monte Carlo simulation program
  *	in such a format that it can be read directly back.
  ****/
-void 
+void
 WriteInParm(InputStruct * In_Ptr)
 {
   short       i;
@@ -185,7 +184,7 @@ WriteInParm(InputStruct * In_Ptr)
 /****************************************************************
  *	Write reflectance, absorption, transmission.
  ****/
-void 
+void
 WriteRAT(OutStruct * Out_Ptr)
 {
   FILE       *file;
@@ -216,7 +215,7 @@ WriteRAT(OutStruct * Out_Ptr)
  *	Write absorption as a function of layer.
  *	2 numbers each line: layer, A[layer].
  ****/
-void 
+void
 WriteA_layer(short Num_Layers,
 	     double *A_l)
 {
@@ -239,7 +238,7 @@ WriteA_layer(short Num_Layers,
 /****************************************************************
  *	2 numbers each line: z, A[z].
  ****/
-void 
+void
 WriteA_z(InputStruct * In_Ptr, double *A_z)
 {
   short       nz = In_Ptr->nz;
@@ -263,7 +262,7 @@ WriteA_z(InputStruct * In_Ptr, double *A_z)
 /****************************************************************
  *	3 numbers each line: r, z, A[r][z].
  ****/
-void 
+void
 WriteA_rz(InputStruct * In_Ptr,
 	  double **A_rz)
 {
@@ -293,7 +292,7 @@ WriteA_rz(InputStruct * In_Ptr,
 /****************************************************************
  *	2 numbers each line: z, F[z].
  ****/
-void 
+void
 WriteF_z(InputStruct * In_Ptr,
 	 double *A_z)
 {
@@ -323,7 +322,7 @@ WriteF_z(InputStruct * In_Ptr,
 /****************************************************************
  *	3 numbers each line: r, z, F[r][z].
  ****/
-void 
+void
 WriteF_rz(InputStruct * In_Ptr,
 	  double **A_rz)
 {
@@ -358,7 +357,7 @@ WriteF_rz(InputStruct * In_Ptr,
 /****************************************************************
  *	3 numbers each line: r, a, Rd[r][a].
  ****/
-void 
+void
 WriteRd_ra(InputStruct * In_Ptr,
 	   double **Rd_ra)
 {
@@ -389,7 +388,7 @@ WriteRd_ra(InputStruct * In_Ptr,
 /****
  *	2 numbers each line: r, Rd[r]
  ****/
-void 
+void
 WriteRd_r(InputStruct * In_Ptr,
 	  double *Rd_r)
 {
@@ -414,7 +413,7 @@ WriteRd_r(InputStruct * In_Ptr,
 /****************************************************************
  *	2 numbers each line: a, Rd[a].
  ****/
-void 
+void
 WriteRd_a(InputStruct * In_Ptr,
 	  double *Rd_a)
 {
@@ -439,7 +438,7 @@ WriteRd_a(InputStruct * In_Ptr,
 /****************************************************************
  *	3 numbers each line:r, a, Tt[r][a]. a = theta.
  ****/
-void 
+void
 WriteTt_ra(InputStruct * In_Ptr,
 	   double **Tt_ra)
 {
@@ -470,7 +469,7 @@ WriteTt_ra(InputStruct * In_Ptr,
 /****
  *	2 numbers each line: r, Tt[r].
  ****/
-void 
+void
 WriteTt_r(InputStruct * In_Ptr,
 	  double *Tt_r)
 {
@@ -495,7 +494,7 @@ WriteTt_r(InputStruct * In_Ptr,
 /****************************************************************
  *	2 numbers each line: theta, Tt[theta].
  ****/
-void 
+void
 WriteTt_a(InputStruct * In_Ptr,
 	  double *Tt_a)
 {
@@ -521,7 +520,7 @@ WriteTt_a(InputStruct * In_Ptr,
  *	Write output in M. Keijzer's format so that the file can be
  *	read by the convolution program written by Keijzer in Pascal.
  ****/
-void 
+void
 WriteKFormat(InputStruct * In_Ptr,
 	     OutStruct * Out_Ptr)
 {
@@ -606,7 +605,7 @@ WriteKFormat(InputStruct * In_Ptr,
 
 /****************************************************************
  ****/
-void 
+void
 ShowOutMenu(char *in_fname)
 {
   printf("I   = Input parameters of mcml\n");
@@ -633,7 +632,7 @@ ShowOutMenu(char *in_fname)
 
 /****************************************************************
  ****/
-void 
+void
 BranchOutA(char *Cmd_Str,
 	   InputStruct * In_Ptr,
 	   OutStruct * Out_Ptr)
@@ -661,7 +660,7 @@ BranchOutA(char *Cmd_Str,
 
 /****************************************************************
  ****/
-void 
+void
 BranchOutF(char *Cmd_Str,
 	   InputStruct * In_Ptr,
 	   OutStruct * Out_Ptr)
@@ -686,7 +685,7 @@ BranchOutF(char *Cmd_Str,
 
 /****************************************************************
  ****/
-void 
+void
 BranchOutR(char *Cmd_Str,
 	   InputStruct * In_Ptr,
 	   OutStruct * Out_Ptr)
@@ -713,7 +712,7 @@ BranchOutR(char *Cmd_Str,
 
 /****************************************************************
  ****/
-void 
+void
 BranchOutT(char *Cmd_Str,
 	   InputStruct * In_Ptr,
 	   OutStruct * Out_Ptr)
@@ -740,7 +739,7 @@ BranchOutT(char *Cmd_Str,
 
 /****************************************************************
  ****/
-void 
+void
 BranchOutCmd(char *Cmd_Str,
 	     InputStruct * In_Ptr,
 	     OutStruct * Out_Ptr)
@@ -779,7 +778,7 @@ BranchOutCmd(char *Cmd_Str,
 
 /****************************************************************
  ****/
-void 
+void
 OutputOrigData(InputStruct * In_Ptr,
 	       OutStruct * Out_Ptr)
 {
@@ -800,7 +799,7 @@ OutputOrigData(InputStruct * In_Ptr,
 /****************************Contours***************************/
 /****************************************************************
  ****/
-void 
+void
 ShowContOrigMenu(char *in_fname)
 {
   printf("A = absorption vs r & z [1/cm3]\n");
@@ -814,7 +813,7 @@ ShowContOrigMenu(char *in_fname)
 /****************************************************************
  *	Absorption density to fluence. A = F/mua;
  ****/
-void 
+void
 A2F(InputStruct * In_Ptr, double **A_rz)
 {
   short       nz = In_Ptr->nz, nr = In_Ptr->nr;
@@ -832,7 +831,7 @@ A2F(InputStruct * In_Ptr, double **A_rz)
 /****************************************************************
  *	Fluence to absorption density. F = A*mua;
  ****/
-void 
+void
 F2A(InputStruct * In_Ptr, double **A_rz)
 {
   short       nz = In_Ptr->nz, nr = In_Ptr->nr;
@@ -849,7 +848,7 @@ F2A(InputStruct * In_Ptr, double **A_rz)
 
 /****************************************************************
  ****/
-void 
+void
 BranchContOrigCmd(char *Cmd_Str,
 		  InputStruct * In_Ptr,
 		  OutStruct * Out_Ptr)
@@ -884,7 +883,7 @@ BranchContOrigCmd(char *Cmd_Str,
 }
 /****************************************************************
  ****/
-void 
+void
 ContourOrigData(InputStruct * In_Ptr,
 		OutStruct * Out_Ptr)
 {
@@ -905,7 +904,7 @@ ContourOrigData(InputStruct * In_Ptr,
 /****************************Scanning***************************/
 /****************************************************************
  ****/
-void 
+void
 ShowScanOrigMenu(char *in_fname)
 {
   printf("Ar = absorption vs r @ fixed z [1/cm3]\n");
@@ -923,7 +922,7 @@ ShowScanOrigMenu(char *in_fname)
 /****************************************************************
  *	Ext is either "Ars" or "Frs".
  ****/
-void 
+void
 ScanOrigA_r(char *Ext, InputStruct * In_Ptr, double **A_rz)
 {
   short       ir, iz, nr = In_Ptr->nr, nz = In_Ptr->nz;
@@ -949,7 +948,7 @@ ScanOrigA_r(char *Ext, InputStruct * In_Ptr, double **A_rz)
 /****************************************************************
  *	Ext is either "Azs" or "Fzs".
  ****/
-void 
+void
 ScanOrigA_z(char *Ext, InputStruct * In_Ptr, double **A_rz)
 {
   short       ir, iz, nr = In_Ptr->nr, nz = In_Ptr->nz;
@@ -974,7 +973,7 @@ ScanOrigA_z(char *Ext, InputStruct * In_Ptr, double **A_rz)
 
 /****************************************************************
  ****/
-void 
+void
 ScanOrigRd_r(InputStruct * In_Ptr, double **Rd_ra)
 {
   short       ir, ia, nr = In_Ptr->nr, na = In_Ptr->na;
@@ -1001,7 +1000,7 @@ ScanOrigRd_r(InputStruct * In_Ptr, double **Rd_ra)
 
 /****************************************************************
  ****/
-void 
+void
 ScanOrigRd_a(InputStruct * In_Ptr, double **Rd_ra)
 {
   short       ir, ia, nr = In_Ptr->nr, na = In_Ptr->na;
@@ -1028,7 +1027,7 @@ ScanOrigRd_a(InputStruct * In_Ptr, double **Rd_ra)
 
 /****************************************************************
  ****/
-void 
+void
 ScanOrigTt_r(InputStruct * In_Ptr, double **Tt_ra)
 {
   short       ir, ia, nr = In_Ptr->nr, na = In_Ptr->na;
@@ -1055,7 +1054,7 @@ ScanOrigTt_r(InputStruct * In_Ptr, double **Tt_ra)
 
 /****************************************************************
  ****/
-void 
+void
 ScanOrigTt_a(InputStruct * In_Ptr, double **Tt_ra)
 {
   short       ir, ia, nr = In_Ptr->nr, na = In_Ptr->na;
@@ -1082,7 +1081,7 @@ ScanOrigTt_a(InputStruct * In_Ptr, double **Tt_ra)
 
 /****************************************************************
  ****/
-void 
+void
 BranchScanOrigA(char *Cmd_Str,
 		InputStruct * In_Ptr,
 		OutStruct * Out_Ptr)
@@ -1105,7 +1104,7 @@ BranchScanOrigA(char *Cmd_Str,
 
 /****************************************************************
  ****/
-void 
+void
 BranchScanOrigF(char *Cmd_Str,
 		InputStruct * In_Ptr,
 		OutStruct * Out_Ptr)
@@ -1132,7 +1131,7 @@ BranchScanOrigF(char *Cmd_Str,
 
 /****************************************************************
  ****/
-void 
+void
 BranchScanOrigR(char *Cmd_Str,
 		InputStruct * In_Ptr,
 		OutStruct * Out_Ptr)
@@ -1151,7 +1150,7 @@ BranchScanOrigR(char *Cmd_Str,
 
 /****************************************************************
  ****/
-void 
+void
 BranchScanOrigT(char *Cmd_Str,
 		InputStruct * In_Ptr,
 		OutStruct * Out_Ptr)
@@ -1170,7 +1169,7 @@ BranchScanOrigT(char *Cmd_Str,
 
 /****************************************************************
  ****/
-void 
+void
 BranchScanOrigCmd(char *Cmd_Str,
 		  InputStruct * In_Ptr,
 		  OutStruct * Out_Ptr)
@@ -1200,7 +1199,7 @@ BranchScanOrigCmd(char *Cmd_Str,
 
 /****************************************************************
  ****/
-void 
+void
 ScanOrigData(InputStruct * In_Ptr,
 	     OutStruct * Out_Ptr)
 {
