@@ -1,16 +1,16 @@
 /****************************************************************
- *	Functions for file output.
+ *  Functions for file output.
  ****/
 
 #include "conv.h"
 
 /****************************************************************
- *	Center a string according to the column width.
+ *  Center a string according to the column width.
  ****/
 char       *
 CenterStr(short int Wid,
-	  char *InStr,
-	  char *OutStr)
+      char *InStr,
+      char *OutStr)
 {
   size_t      nspaces;
   /* number of spaces to be filled before InStr. */
@@ -29,8 +29,8 @@ CenterStr(short int Wid,
 }
 
 /****************************************************************
- *	Print some messages before starting simulation.  e.g. author,
- *	address, program version, year.
+ *  Print some messages before starting simulation.  e.g. author,
+ *  address, program version, year.
  ****/
 #define COLWIDTH 80
 void
@@ -76,11 +76,11 @@ ShowVersion(void)
 #undef COLWIDTH
 
 /****************************************************************
- *	Open a file for output with extension Ext.  If file exists,
- *	ask whether to overwrite or append or change filename.
+ *  Open a file for output with extension Ext.  If file exists,
+ *  ask whether to overwrite or append or change filename.
  *
- *	Return file pointer, which could be NULL.
- *	Return the full filename as Ext.
+ *  Return file pointer, which could be NULL.
+ *  Return the full filename as Ext.
  ****/
 FILE       *
 GetWriteFile(char *Ext)
@@ -117,28 +117,28 @@ GetWriteFile(char *Ext)
 }
 
 /****************************************************************
- *	Return the index to the layer, where iz is in.
+ *  Return the index to the layer, where iz is in.
  *
- *	Use the center of box.
+ *  Use the center of box.
  ****/
 short
 IzToLayer(short Iz,
-	  InputStruct * In_Ptr)
+      InputStruct * In_Ptr)
 {
-  short       i = 1;		/* index to layer. */
+  short       i = 1;        /* index to layer. */
   short       num_layers = In_Ptr->num_layers;
   double      dz = In_Ptr->dz;
 
   while ((Iz + 0.5) * dz >= In_Ptr->layerspecs[i].z1
-	 && i < num_layers)
+     && i < num_layers)
     i++;
 
   return (i);
 }
 
 /****************************************************************
- *	Write the input parameter for Monte Carlo simulation program
- *	in such a format that it can be read directly back.
+ *  Write the input parameter for Monte Carlo simulation program
+ *  in such a format that it can be read directly back.
  ****/
 void
 WriteInParm(InputStruct * In_Ptr)
@@ -157,32 +157,32 @@ WriteInParm(InputStruct * In_Ptr)
   fprintf(file, "temp.out\tA\t\t#output filename.\n");
 
   fprintf(file, "%ld \t\t\t# No. of photons.\n",
-	  In_Ptr->num_photons);
+      In_Ptr->num_photons);
 
   fprintf(file, "%G\t%G\t\t# dz, dr.\n", In_Ptr->dz, In_Ptr->dr);
   fprintf(file, "%hd\t%hd\t%hd\t# No. of dz, dr, da.\n\n",
-	  In_Ptr->nz, In_Ptr->nr, In_Ptr->na);
+      In_Ptr->nz, In_Ptr->nr, In_Ptr->na);
 
   fprintf(file, "%hd\t\t\t\t\t# Number of layers.\n",
-	  In_Ptr->num_layers);
+      In_Ptr->num_layers);
   fprintf(file,
-	  "#n\tmua\tmus\tg\td\t# One line for each layer.\n");
+      "#n\tmua\tmus\tg\td\t# One line for each layer.\n");
   fprintf(file, "%G\t\t\t\t\t# n for medium above.\n",
-	  In_Ptr->layerspecs[0].n);
+      In_Ptr->layerspecs[0].n);
   for (i = 1; i <= In_Ptr->num_layers; i++) {
     LayerStruct s;
     s = In_Ptr->layerspecs[i];
     fprintf(file, "%G\t%G\t%G\t%G\t%G\t# layer %hd\n",
-	    s.n, s.mua, s.mus, s.g, s.z1 - s.z0, i);
+        s.n, s.mua, s.mus, s.g, s.z1 - s.z0, i);
   }
   fprintf(file, "%G\t\t\t\t\t# n for medium below.\n\n",
-	  In_Ptr->layerspecs[i].n);
+      In_Ptr->layerspecs[i].n);
 
   fclose(file);
 }
 
 /****************************************************************
- *	Write reflectance, absorption, transmission.
+ *  Write reflectance, absorption, transmission.
  ****/
 void
 WriteRAT(OutStruct * Out_Ptr)
@@ -195,16 +195,16 @@ WriteRAT(OutStruct * Out_Ptr)
   if (file == NULL)
     return;
 
-  fprintf(file,			/* flag. */
-	  "RAT #Reflectance, absorption, transmission.\n");
+  fprintf(file,         /* flag. */
+      "RAT #Reflectance, absorption, transmission.\n");
   fprintf(file, "%-12.4G \t#Specular reflectance.\n",
-	  Out_Ptr->Rsp);
+      Out_Ptr->Rsp);
   fprintf(file, "%-12.4G \t#Diffuse reflectance.\n",
-	  Out_Ptr->Rd);
+      Out_Ptr->Rd);
   fprintf(file, "%-12.4G \t#Absorption.\n",
-	  Out_Ptr->A);
+      Out_Ptr->A);
   fprintf(file, "%-12.4G \t#Transmission.\n",
-	  Out_Ptr->Tt);
+      Out_Ptr->Tt);
 
   fprintf(file, "\n");
 
@@ -212,12 +212,12 @@ WriteRAT(OutStruct * Out_Ptr)
 }
 
 /****************************************************************
- *	Write absorption as a function of layer.
- *	2 numbers each line: layer, A[layer].
+ *  Write absorption as a function of layer.
+ *  2 numbers each line: layer, A[layer].
  ****/
 void
 WriteA_layer(short Num_Layers,
-	     double *A_l)
+         double *A_l)
 {
   short       i;
   FILE       *file;
@@ -236,7 +236,7 @@ WriteA_layer(short Num_Layers,
 }
 
 /****************************************************************
- *	2 numbers each line: z, A[z].
+ *  2 numbers each line: z, A[z].
  ****/
 void
 WriteA_z(InputStruct * In_Ptr, double *A_z)
@@ -260,11 +260,11 @@ WriteA_z(InputStruct * In_Ptr, double *A_z)
 }
 
 /****************************************************************
- *	3 numbers each line: r, z, A[r][z].
+ *  3 numbers each line: r, z, A[r][z].
  ****/
 void
 WriteA_rz(InputStruct * In_Ptr,
-	  double **A_rz)
+      double **A_rz)
 {
   short       ir, iz, nz = In_Ptr->nz, nr = In_Ptr->nr;
   double      r, z, dr = In_Ptr->dr, dz = In_Ptr->dz;
@@ -282,7 +282,7 @@ WriteA_rz(InputStruct * In_Ptr,
     for (iz = 0; iz < nz; iz++) {
       z = (iz + 0.5) * dz;
       fprintf(file, "%-12.4E\t%-12.4E\t%-12.4E\n",
-	      r, z, A_rz[ir][iz]);
+          r, z, A_rz[ir][iz]);
     }
   }
 
@@ -290,11 +290,11 @@ WriteA_rz(InputStruct * In_Ptr,
 }
 
 /****************************************************************
- *	2 numbers each line: z, F[z].
+ *  2 numbers each line: z, F[z].
  ****/
 void
 WriteF_z(InputStruct * In_Ptr,
-	 double *A_z)
+     double *A_z)
 {
   FILE       *file;
   short       iz, nz = In_Ptr->nz;
@@ -311,7 +311,7 @@ WriteF_z(InputStruct * In_Ptr,
     mua = In_Ptr->layerspecs[IzToLayer(iz, In_Ptr)].mua;
     if (mua > 0.0)
       fprintf(file, "%-12.4E\t%-12.4E\n", (iz + 0.5) * dz,
-	      A_z[iz] / mua);
+          A_z[iz] / mua);
     else
       fprintf(file, "%-12.4E\t%-12.4E\n", (iz + 0.5) * dz, 0.0);
   }
@@ -320,11 +320,11 @@ WriteF_z(InputStruct * In_Ptr,
 }
 
 /****************************************************************
- *	3 numbers each line: r, z, F[r][z].
+ *  3 numbers each line: r, z, F[r][z].
  ****/
 void
 WriteF_rz(InputStruct * In_Ptr,
-	  double **A_rz)
+      double **A_rz)
 {
   FILE       *file;
   short       ir, iz, nz = In_Ptr->nz, nr = In_Ptr->nr;
@@ -337,17 +337,17 @@ WriteF_rz(InputStruct * In_Ptr,
     return;
 
   fprintf(file, "%-12s\t%-12s\t%-s[1/cm2]\n",
-	  "r[cm]", "z[cm]", fname);
+      "r[cm]", "z[cm]", fname);
   for (ir = 0; ir < nr; ir++) {
     r = (ir + 0.5) * dr;
     for (iz = 0; iz < nz; iz++) {
       z = (iz + 0.5) * dz;
       mua = In_Ptr->layerspecs[IzToLayer(iz, In_Ptr)].mua;
       if (mua > 0.0)
-	fprintf(file, "%-12.4E\t%-12.4E\t%-12.4E\n",
-		r, z, A_rz[ir][iz] / mua);
+    fprintf(file, "%-12.4E\t%-12.4E\t%-12.4E\n",
+        r, z, A_rz[ir][iz] / mua);
       else
-	fprintf(file, "%-12.4E\t%-12.4E\t%-12.4E\n", r, z, 0.0);
+    fprintf(file, "%-12.4E\t%-12.4E\t%-12.4E\n", r, z, 0.0);
     }
   }
 
@@ -355,11 +355,11 @@ WriteF_rz(InputStruct * In_Ptr,
 }
 
 /****************************************************************
- *	3 numbers each line: r, a, Rd[r][a].
+ *  3 numbers each line: r, a, Rd[r][a].
  ****/
 void
 WriteRd_ra(InputStruct * In_Ptr,
-	   double **Rd_ra)
+       double **Rd_ra)
 {
   short       ir, ia, nr = In_Ptr->nr, na = In_Ptr->na;
   double      r, a, dr = In_Ptr->dr, da = In_Ptr->da;
@@ -372,13 +372,13 @@ WriteRd_ra(InputStruct * In_Ptr,
     return;
 
   fprintf(file, "%-12s\t%-12s\t%-s[1/(cm2sr)]\n",
-	  "r[cm]", "a[rad]", fname);
+      "r[cm]", "a[rad]", fname);
   for (ir = 0; ir < nr; ir++) {
     r = (ir + 0.5) * dr;
     for (ia = 0; ia < na; ia++) {
       a = (ia + 0.5) * da;
       fprintf(file, "%-12.4E\t%-12.4E\t%-12.4E\n",
-	      r, a, Rd_ra[ir][ia]);
+          r, a, Rd_ra[ir][ia]);
     }
   }
 
@@ -386,11 +386,11 @@ WriteRd_ra(InputStruct * In_Ptr,
 }
 
 /****
- *	2 numbers each line: r, Rd[r]
+ *  2 numbers each line: r, Rd[r]
  ****/
 void
 WriteRd_r(InputStruct * In_Ptr,
-	  double *Rd_r)
+      double *Rd_r)
 {
   short       ir, nr = In_Ptr->nr;
   double      dr = In_Ptr->dr;
@@ -405,17 +405,17 @@ WriteRd_r(InputStruct * In_Ptr,
   fprintf(file, "%-12s\t%-s[1/cm2]\n", "r[cm]", fname);
   for (ir = 0; ir < nr; ir++)
     fprintf(file, "%-12.4E\t%-12.4E\n", (ir + 0.5) * dr,
-	    Rd_r[ir]);
+        Rd_r[ir]);
 
   fclose(file);
 }
 
 /****************************************************************
- *	2 numbers each line: a, Rd[a].
+ *  2 numbers each line: a, Rd[a].
  ****/
 void
 WriteRd_a(InputStruct * In_Ptr,
-	  double *Rd_a)
+      double *Rd_a)
 {
   short       ia, na = In_Ptr->na;
   double      da = In_Ptr->da;
@@ -430,17 +430,17 @@ WriteRd_a(InputStruct * In_Ptr,
   fprintf(file, "%-12s\t%-s[1/sr]\n", "a[rad]", fname);
   for (ia = 0; ia < na; ia++)
     fprintf(file, "%-12.4E\t%-12.4E\n", (ia + 0.5) * da,
-	    Rd_a[ia]);
+        Rd_a[ia]);
 
   fclose(file);
 }
 
 /****************************************************************
- *	3 numbers each line:r, a, Tt[r][a]. a = theta.
+ *  3 numbers each line:r, a, Tt[r][a]. a = theta.
  ****/
 void
 WriteTt_ra(InputStruct * In_Ptr,
-	   double **Tt_ra)
+       double **Tt_ra)
 {
   short       ir, ia, nr = In_Ptr->nr, na = In_Ptr->na;
   double      r, a, dr = In_Ptr->dr, da = In_Ptr->da;
@@ -453,13 +453,13 @@ WriteTt_ra(InputStruct * In_Ptr,
     return;
 
   fprintf(file, "%-12s\t%-12s\t%-s[1/(cm2sr)]\n",
-	  "r[cm]", "a[rad]", fname);
+      "r[cm]", "a[rad]", fname);
   for (ir = 0; ir < nr; ir++) {
     r = (ir + 0.5) * dr;
     for (ia = 0; ia < na; ia++) {
       a = (ia + 0.5) * da;
       fprintf(file, "%-12.4E\t%-12.4E\t%-12.4E\n",
-	      r, a, Tt_ra[ir][ia]);
+          r, a, Tt_ra[ir][ia]);
     }
   }
 
@@ -467,11 +467,11 @@ WriteTt_ra(InputStruct * In_Ptr,
 }
 
 /****
- *	2 numbers each line: r, Tt[r].
+ *  2 numbers each line: r, Tt[r].
  ****/
 void
 WriteTt_r(InputStruct * In_Ptr,
-	  double *Tt_r)
+      double *Tt_r)
 {
   short       ir, nr = In_Ptr->nr;
   double      dr = In_Ptr->dr;
@@ -486,17 +486,17 @@ WriteTt_r(InputStruct * In_Ptr,
   fprintf(file, "%-12s\t%-s[1/cm2]\n", "r[cm]", fname);
   for (ir = 0; ir < nr; ir++)
     fprintf(file, "%-12.4E\t%-12.4E\n", (ir + 0.5) * dr,
-	    Tt_r[ir]);
+        Tt_r[ir]);
 
   fclose(file);
 }
 
 /****************************************************************
- *	2 numbers each line: theta, Tt[theta].
+ *  2 numbers each line: theta, Tt[theta].
  ****/
 void
 WriteTt_a(InputStruct * In_Ptr,
-	  double *Tt_a)
+      double *Tt_a)
 {
   short       ia, na = In_Ptr->na;
   double      da = In_Ptr->da;
@@ -511,18 +511,18 @@ WriteTt_a(InputStruct * In_Ptr,
   fprintf(file, "%-12s\t%-s[1/sr]\n", "a[rad]", fname);
   for (ia = 0; ia < na; ia++)
     fprintf(file, "%-12.4E\t%-12.4E\n", (ia + 0.5) * da,
-	    Tt_a[ia]);
+        Tt_a[ia]);
 
   fclose(file);
 }
 
 /****************************************************************
- *	Write output in M. Keijzer's format so that the file can be
- *	read by the convolution program written by Keijzer in Pascal.
+ *  Write output in M. Keijzer's format so that the file can be
+ *  read by the convolution program written by Keijzer in Pascal.
  ****/
 void
 WriteKFormat(InputStruct * In_Ptr,
-	     OutStruct * Out_Ptr)
+         OutStruct * Out_Ptr)
 {
   short       i, j;
   double      dz, dr;
@@ -537,38 +537,38 @@ WriteKFormat(InputStruct * In_Ptr,
   fputs("output.filename\n", file);
   fprintf(file, "%12hd layers\n", In_Ptr->num_layers);
   fprintf(file, "%12s %12s %12s %12s %12s %12s\n",
-	  "layer", "mua", "mus", "g", "nt", "thickness");
+      "layer", "mua", "mus", "g", "nt", "thickness");
 
   for (i = 1; i <= In_Ptr->num_layers; i++)
     fprintf(file,
-	    "%12hd %12.6lf %12.6lf %12.6lf %12.6lf %12.6lf\n",
-	    i, In_Ptr->layerspecs[i].mua,
-	    In_Ptr->layerspecs[i].mus,
-	    In_Ptr->layerspecs[i].g, In_Ptr->layerspecs[i].n,
-	    In_Ptr->layerspecs[i].z1 -
-	    In_Ptr->layerspecs[i].z0);
+        "%12hd %12.6lf %12.6lf %12.6lf %12.6lf %12.6lf\n",
+        i, In_Ptr->layerspecs[i].mua,
+        In_Ptr->layerspecs[i].mus,
+        In_Ptr->layerspecs[i].g, In_Ptr->layerspecs[i].n,
+        In_Ptr->layerspecs[i].z1 -
+        In_Ptr->layerspecs[i].z0);
   fprintf(file, "%12.6lf index of refraction above\n",
-	  In_Ptr->layerspecs[0].n);
+      In_Ptr->layerspecs[0].n);
   fprintf(file, "%12.6lf index of refraction below\n",
-	  In_Ptr->layerspecs[i].n);
+      In_Ptr->layerspecs[i].n);
   fprintf(file, "\n");
 
   fprintf(file, "%12ld photons\n", In_Ptr->num_photons);
   fprintf(file, "%12.6lf critical weight\n", In_Ptr->Wth);
   fprintf(file, "%12.6lf depth of boxes micron\n",
-	  In_Ptr->dz * 1e4);
+      In_Ptr->dz * 1e4);
   fprintf(file, "%12.6lf width of boxes micron\n",
-	  In_Ptr->dr * 1e4);
+      In_Ptr->dr * 1e4);
   fprintf(file, "%12hd number of boxes in z \n", In_Ptr->nz);
   fprintf(file, "%12hd number of boxes in r \n", In_Ptr->nr);
   fprintf(file, "\n");
 
   fprintf(file,
-	  "%12.6lf Total reflection (including direct R)\n",
-	  Out_Ptr->Rsp + Out_Ptr->Rd);
+      "%12.6lf Total reflection (including direct R)\n",
+      Out_Ptr->Rsp + Out_Ptr->Rd);
   for (i = 1; i <= In_Ptr->num_layers; i++)
     fprintf(file, "%12.6lf Absorbed in layer %12hd\n",
-	    Out_Ptr->A_l[i], i);
+        Out_Ptr->A_l[i], i);
   fprintf(file, "%12.6lf Total transmission\n", Out_Ptr->Tt);
   fprintf(file, "\n");
 
@@ -634,21 +634,21 @@ ShowOutMenu(char *in_fname)
  ****/
 void
 BranchOutA(char *Cmd_Str,
-	   InputStruct * In_Ptr,
-	   OutStruct * Out_Ptr)
+       InputStruct * In_Ptr,
+       OutStruct * Out_Ptr)
 {
   switch (toupper(Cmd_Str[1])) {
-    case 'L':			/* A_l. */
+    case 'L':           /* A_l. */
     WriteA_layer(In_Ptr->num_layers, Out_Ptr->A_l);
     break;
   case 'Z':
-    if (toupper(Cmd_Str[2]) == '\0')	/* A_z. */
+    if (toupper(Cmd_Str[2]) == '\0')    /* A_z. */
       WriteA_z(In_Ptr, Out_Ptr->A_z);
     else
       puts("...Wrong command");
     break;
   case 'R':
-    if (toupper(Cmd_Str[2]) == 'Z')	/* A_rz. */
+    if (toupper(Cmd_Str[2]) == 'Z') /* A_rz. */
       WriteA_rz(In_Ptr, Out_Ptr->A_rz);
     else
       puts("...Wrong command");
@@ -662,18 +662,18 @@ BranchOutA(char *Cmd_Str,
  ****/
 void
 BranchOutF(char *Cmd_Str,
-	   InputStruct * In_Ptr,
-	   OutStruct * Out_Ptr)
+       InputStruct * In_Ptr,
+       OutStruct * Out_Ptr)
 {
   switch (toupper(Cmd_Str[1])) {
     case 'Z':
-    if (toupper(Cmd_Str[2]) == '\0')	/* F_z. */
+    if (toupper(Cmd_Str[2]) == '\0')    /* F_z. */
       WriteF_z(In_Ptr, Out_Ptr->A_z);
     else
       puts("...Wrong command");
     break;
   case 'R':
-    if (toupper(Cmd_Str[2]) == 'Z')	/* F_rz. */
+    if (toupper(Cmd_Str[2]) == 'Z') /* F_rz. */
       WriteF_rz(In_Ptr, Out_Ptr->A_rz);
     else
       puts("...Wrong command");
@@ -687,20 +687,20 @@ BranchOutF(char *Cmd_Str,
  ****/
 void
 BranchOutR(char *Cmd_Str,
-	   InputStruct * In_Ptr,
-	   OutStruct * Out_Ptr)
+       InputStruct * In_Ptr,
+       OutStruct * Out_Ptr)
 {
   char        ch;
 
   switch (toupper(Cmd_Str[1])) {
-  case 'A':			/* Rd_a. */
+  case 'A':         /* Rd_a. */
     WriteRd_a(In_Ptr, Out_Ptr->Rd_a);
     break;
   case 'R':
     ch = toupper(Cmd_Str[2]);
-    if (ch == '\0')		/* Rd_r. */
+    if (ch == '\0')     /* Rd_r. */
       WriteRd_r(In_Ptr, Out_Ptr->Rd_r);
-    else if (ch == 'A')		/* Rd_ra. */
+    else if (ch == 'A')     /* Rd_ra. */
       WriteRd_ra(In_Ptr, Out_Ptr->Rd_ra);
     else
       puts("...Wrong command");
@@ -714,20 +714,20 @@ BranchOutR(char *Cmd_Str,
  ****/
 void
 BranchOutT(char *Cmd_Str,
-	   InputStruct * In_Ptr,
-	   OutStruct * Out_Ptr)
+       InputStruct * In_Ptr,
+       OutStruct * Out_Ptr)
 {
   char        ch;
 
   switch (toupper(Cmd_Str[1])) {
-  case 'A':			/* Tt_a. */
+  case 'A':         /* Tt_a. */
     WriteTt_a(In_Ptr, Out_Ptr->Tt_a);
     break;
   case 'R':
     ch = toupper(Cmd_Str[2]);
-    if (ch == '\0')		/* Tt_r. */
+    if (ch == '\0')     /* Tt_r. */
       WriteTt_r(In_Ptr, Out_Ptr->Tt_r);
-    else if (ch == 'A')		/* Tt_ra. */
+    else if (ch == 'A')     /* Tt_ra. */
       WriteTt_ra(In_Ptr, Out_Ptr->Tt_ra);
     else
       puts("...Wrong command");
@@ -741,8 +741,8 @@ BranchOutT(char *Cmd_Str,
  ****/
 void
 BranchOutCmd(char *Cmd_Str,
-	     InputStruct * In_Ptr,
-	     OutStruct * Out_Ptr)
+         InputStruct * In_Ptr,
+         OutStruct * Out_Ptr)
 {
   switch (toupper(Cmd_Str[0])) {
   case 'I':
@@ -780,7 +780,7 @@ BranchOutCmd(char *Cmd_Str,
  ****/
 void
 OutputOrigData(InputStruct * In_Ptr,
-	       OutStruct * Out_Ptr)
+           OutStruct * Out_Ptr)
 {
   char        cmd_str[STRLEN];
 
@@ -790,8 +790,8 @@ OutputOrigData(InputStruct * In_Ptr,
     do {
       printf("\n> Output mcml data (h for help) => ");
       do
-	scanf("%s", cmd_str);
-      while (!strlen(cmd_str));	/* avoid null string. */
+    scanf("%s", cmd_str);
+      while (!strlen(cmd_str)); /* avoid null string. */
       BranchOutCmd(cmd_str, In_Ptr, Out_Ptr);
     } while (toupper(cmd_str[0]) != 'Q');
 }
@@ -811,7 +811,7 @@ ShowContOrigMenu(char *in_fname)
 }
 
 /****************************************************************
- *	Absorption density to fluence. A = F/mua;
+ *  Absorption density to fluence. A = F/mua;
  ****/
 void
 A2F(InputStruct * In_Ptr, double **A_rz)
@@ -824,12 +824,12 @@ A2F(InputStruct * In_Ptr, double **A_rz)
     for (iz = 0; iz < nz; iz++) {
       mua = In_Ptr->layerspecs[IzToLayer(iz, In_Ptr)].mua;
       if (mua > 0.0)
-	A_rz[ir][iz] /= mua;
+    A_rz[ir][iz] /= mua;
     }
 }
 
 /****************************************************************
- *	Fluence to absorption density. F = A*mua;
+ *  Fluence to absorption density. F = A*mua;
  ****/
 void
 F2A(InputStruct * In_Ptr, double **A_rz)
@@ -842,7 +842,7 @@ F2A(InputStruct * In_Ptr, double **A_rz)
     for (iz = 0; iz < nz; iz++) {
       mua = In_Ptr->layerspecs[IzToLayer(iz, In_Ptr)].mua;
       if (mua > 0.0)
-	A_rz[ir][iz] *= mua;
+    A_rz[ir][iz] *= mua;
     }
 }
 
@@ -850,27 +850,27 @@ F2A(InputStruct * In_Ptr, double **A_rz)
  ****/
 void
 BranchContOrigCmd(char *Cmd_Str,
-		  InputStruct * In_Ptr,
-		  OutStruct * Out_Ptr)
+          InputStruct * In_Ptr,
+          OutStruct * Out_Ptr)
 {
   switch (toupper(Cmd_Str[0])) {
   case 'A':
     IsoPlot(Out_Ptr->A_rz, In_Ptr->nr - 1, In_Ptr->nz - 1,
-	    In_Ptr->dr, In_Ptr->dz);
+        In_Ptr->dr, In_Ptr->dz);
     break;
   case 'F':
     A2F(In_Ptr, Out_Ptr->A_rz);
     IsoPlot(Out_Ptr->A_rz, In_Ptr->nr - 1, In_Ptr->nz - 1,
-	    In_Ptr->dr, In_Ptr->dz);
+        In_Ptr->dr, In_Ptr->dz);
     F2A(In_Ptr, Out_Ptr->A_rz);
     break;
   case 'R':
     IsoPlot(Out_Ptr->Rd_ra, In_Ptr->nr - 1, In_Ptr->na - 1,
-	    In_Ptr->dr, In_Ptr->da);
+        In_Ptr->dr, In_Ptr->da);
     break;
   case 'T':
     IsoPlot(Out_Ptr->Tt_ra, In_Ptr->nr - 1, In_Ptr->na - 1,
-	    In_Ptr->dr, In_Ptr->da);
+        In_Ptr->dr, In_Ptr->da);
     break;
   case 'H':
     ShowContOrigMenu(In_Ptr->in_fname);
@@ -885,7 +885,7 @@ BranchContOrigCmd(char *Cmd_Str,
  ****/
 void
 ContourOrigData(InputStruct * In_Ptr,
-		OutStruct * Out_Ptr)
+        OutStruct * Out_Ptr)
 {
   char        cmd_str[STRLEN];
 
@@ -895,8 +895,8 @@ ContourOrigData(InputStruct * In_Ptr,
     do {
       printf("\n> Contour output of mcml data (h for help) => ");
       do
-	scanf("%s", cmd_str);
-      while (!strlen(cmd_str));	/* avoid null string. */
+    scanf("%s", cmd_str);
+      while (!strlen(cmd_str)); /* avoid null string. */
       BranchContOrigCmd(cmd_str, In_Ptr, Out_Ptr);
     } while (toupper(cmd_str[0]) != 'Q');
 }
@@ -920,7 +920,7 @@ ShowScanOrigMenu(char *in_fname)
 }
 
 /****************************************************************
- *	Ext is either "Ars" or "Frs".
+ *  Ext is either "Ars" or "Frs".
  ****/
 void
 ScanOrigA_r(char *Ext, InputStruct * In_Ptr, double **A_rz)
@@ -946,7 +946,7 @@ ScanOrigA_r(char *Ext, InputStruct * In_Ptr, double **A_rz)
 }
 
 /****************************************************************
- *	Ext is either "Azs" or "Fzs".
+ *  Ext is either "Azs" or "Fzs".
  ****/
 void
 ScanOrigA_z(char *Ext, InputStruct * In_Ptr, double **A_rz)
@@ -1083,8 +1083,8 @@ ScanOrigTt_a(InputStruct * In_Ptr, double **Tt_ra)
  ****/
 void
 BranchScanOrigA(char *Cmd_Str,
-		InputStruct * In_Ptr,
-		OutStruct * Out_Ptr)
+        InputStruct * In_Ptr,
+        OutStruct * Out_Ptr)
 {
   char        fname[STRLEN];
 
@@ -1106,8 +1106,8 @@ BranchScanOrigA(char *Cmd_Str,
  ****/
 void
 BranchScanOrigF(char *Cmd_Str,
-		InputStruct * In_Ptr,
-		OutStruct * Out_Ptr)
+        InputStruct * In_Ptr,
+        OutStruct * Out_Ptr)
 {
   char        fname[STRLEN];
 
@@ -1133,8 +1133,8 @@ BranchScanOrigF(char *Cmd_Str,
  ****/
 void
 BranchScanOrigR(char *Cmd_Str,
-		InputStruct * In_Ptr,
-		OutStruct * Out_Ptr)
+        InputStruct * In_Ptr,
+        OutStruct * Out_Ptr)
 {
   switch (toupper(Cmd_Str[1])) {
     case 'R':
@@ -1152,8 +1152,8 @@ BranchScanOrigR(char *Cmd_Str,
  ****/
 void
 BranchScanOrigT(char *Cmd_Str,
-		InputStruct * In_Ptr,
-		OutStruct * Out_Ptr)
+        InputStruct * In_Ptr,
+        OutStruct * Out_Ptr)
 {
   switch (toupper(Cmd_Str[1])) {
     case 'R':
@@ -1171,8 +1171,8 @@ BranchScanOrigT(char *Cmd_Str,
  ****/
 void
 BranchScanOrigCmd(char *Cmd_Str,
-		  InputStruct * In_Ptr,
-		  OutStruct * Out_Ptr)
+          InputStruct * In_Ptr,
+          OutStruct * Out_Ptr)
 {
   switch (toupper(Cmd_Str[0])) {
   case 'A':
@@ -1201,7 +1201,7 @@ BranchScanOrigCmd(char *Cmd_Str,
  ****/
 void
 ScanOrigData(InputStruct * In_Ptr,
-	     OutStruct * Out_Ptr)
+         OutStruct * Out_Ptr)
 {
   char        cmd_str[STRLEN];
 
@@ -1211,8 +1211,8 @@ ScanOrigData(InputStruct * In_Ptr,
     do {
       printf("\n> Scans of mcml data (h for help) => ");
       do
-	scanf("%s", cmd_str);
-      while (!strlen(cmd_str));	/* avoid null string. */
+    scanf("%s", cmd_str);
+      while (!strlen(cmd_str)); /* avoid null string. */
       BranchScanOrigCmd(cmd_str, In_Ptr, Out_Ptr);
     } while (toupper(cmd_str[0]) != 'Q');
 }
